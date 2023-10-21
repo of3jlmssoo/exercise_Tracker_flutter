@@ -47,7 +47,7 @@ const int myMainContainerColor = myTimeAreaColor;
 // const int myTimeInfoFontColor = 0xFfcfd8dc;
 const int myAppBarFontColor = 0xFFB0BEC5;
 const int myTimeInfoFontColor = 0xFF78909C;
-const int myTimeInfoFontColorinvisible = 0x0078909C;
+const int myTimeInfoFontColorInvisible = 0x0078909C;
 
 Set<int> alreadyRendered = {};
 Set<int> alreadyTapped = {};
@@ -376,45 +376,78 @@ class _MyHomePageState extends State<MyHomePage> {
                 crossAxisSpacing: 10.0,
                 childAspectRatio: 1.4,
               ),
-              delegate: SliverChildBuilderDelegate(
-                (BuildContext context, int index) {
-                  // done: need to be clickable
-                  return Card(
-                    // color: Colors.limeAccent,
+              delegate: SliverChildListDelegate([
+                Card(
                     color: const Color(myCardColor),
                     clipBehavior: Clip.hardEdge,
                     child: InkWell(
                       onTap: () {
                         debugPrint('>>>>>> $alreadyTapped');
-                        alreadyTapped.contains(index)
+                        alreadyTapped.contains(0)
                             ? {}
                             : {
                                 SystemSound.play(SystemSoundType.click),
                                 // _selected_workout = index,
                                 _incrementCounter(),
-                                _startTimer(index),
-                                alreadyTapped.add(index)
+                                _startTimer(0),
+                                alreadyTapped.add(0)
                               };
                       },
                       child: Column(
                         children: [
-                          imageList[index].$1,
+                          imageList[0].$1,
                           SizedBox(
                             width: 100,
                             height: 100,
-                            child: (index != _selectedWorkout &&
-                                    !alreadyRendered.contains(index))
-                                ? imageList[index].$2
+                            child: (0 != _selectedWorkout &&
+                                    !alreadyRendered.contains(0))
+                                ? imageList[0].$2
                                 : imageListDone[0].$2,
                           ),
                           // imageList[index],
                         ],
                       ),
-                    ),
-                  );
-                },
-                childCount: imageList.length,
-              ),
+                    )),
+              ]),
+              // delegate: SliverChildBuilderDelegate(
+              //   (BuildContext context, int index) {
+              //     // done: need to be clickable
+              //     return Card(
+              //       // color: Colors.limeAccent,
+              //       color: const Color(myCardColor),
+              //       clipBehavior: Clip.hardEdge,
+              //       child: InkWell(
+              //         onTap: () {
+              //           debugPrint('>>>>>> $alreadyTapped');
+              //           alreadyTapped.contains(index)
+              //               ? {}
+              //               : {
+              //                   SystemSound.play(SystemSoundType.click),
+              //                   // _selected_workout = index,
+              //                   _incrementCounter(),
+              //                   _startTimer(index),
+              //                   alreadyTapped.add(index)
+              //                 };
+              //         },
+              //         child: Column(
+              //           children: [
+              //             imageList[index].$1,
+              //             SizedBox(
+              //               width: 100,
+              //               height: 100,
+              //               child: (index != _selectedWorkout &&
+              //                       !alreadyRendered.contains(index))
+              //                   ? imageList[index].$2
+              //                   : imageListDone[0].$2,
+              //             ),
+              //             // imageList[index],
+              //           ],
+              //         ),
+              //       ),
+              //     );
+              //   },
+              //   childCount: imageList.length,
+              // ),
             ),
           ],
         ));
