@@ -30,14 +30,14 @@ import 'dart:async';
 import 'package:flutter/services.dart';
 // import 'package:tuple/tuple.dart';
 // import 'package:audioplayers/audioplayers.dart';
-import 'package:just_audio/just_audio.dart';
+// import 'package:just_audio/just_audio.dart';
 
-const int PREP_DURATION = 2;
-const int WORKOUT_DURATION = 5;
-const int TOTAL_DURATION = PREP_DURATION + WORKOUT_DURATION;
+const prepDuration = 2;
+const int workoutDuration = 3;
+const int totalDuration = prepDuration + workoutDuration;
 
-int _selected_workout = -1;
-bool _cancelthetimer = false;
+int _selectedWorkout = -1;
+bool _cancelTimer = false;
 // const int NUMBER_OF_WORKOUT = 10;
 const int myAppBarColor = 0xff2C3333;
 const int myCardColor = 0xff5B9A8B;
@@ -49,12 +49,12 @@ const int myAppBarFontColor = 0xFFB0BEC5;
 const int myTimeInfoFontColor = 0xFF78909C;
 const int myTimeInfoFontColorinvisible = 0x0078909C;
 
-Set<int> alreadyRendered = Set();
-Set<int> alreadyTapped = Set();
+Set<int> alreadyRendered = {};
+Set<int> alreadyTapped = {};
 
 List imageListDone = [
   (
-    Text('Done'),
+    const Text('Done'),
     Image.asset(
       'images/done.png',
       fit: BoxFit.contain,
@@ -63,70 +63,70 @@ List imageListDone = [
 ];
 List imageList = [
   (
-    Text('pullDown'),
+    const Text('pullDown'),
     Image.asset(
       'images/pullDown.png',
       fit: BoxFit.contain,
     )
   ),
   (
-    Text('pull'),
+    const Text('pull'),
     Image.asset(
       'images/pull.png',
       fit: BoxFit.contain,
     )
   ),
   (
-    Text('openArms'),
+    const Text('openArms'),
     Image.asset(
       'images/openArms.png',
       fit: BoxFit.contain,
     )
   ),
   (
-    Text('closeArms'),
+    const Text('closeArms'),
     Image.asset(
       'images/closeArms.png',
       fit: BoxFit.contain,
     )
   ),
   (
-    Text('core'),
+    const Text('core'),
     Image.asset(
       'images/core.png',
       fit: BoxFit.contain,
     )
   ),
   (
-    Text('core'),
+    const Text('core'),
     Image.asset(
       'images/core.png',
       fit: BoxFit.contain,
     )
   ),
   (
-    Text('push'),
+    const Text('push'),
     Image.asset(
       'images/push.png',
       fit: BoxFit.contain,
     )
   ),
   (
-    Text('hamstring'),
+    const Text('hamstring'),
     Image.asset(
       'images/hamstring.png',
       fit: BoxFit.contain,
     )
   ),
   (
-    Text('openFeet'),
+    const Text('openFeet'),
     Image.asset(
       'images/openFeet.png',
       fit: BoxFit.contain,
     )
   ),
   (
-    Text('closeFeet'),
+    const Text('closeFeet'),
     Image.asset(
       'images/closeFeet.png',
       fit: BoxFit.contain,
@@ -166,8 +166,8 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
-  int _remainingTime = TOTAL_DURATION; //initial time in seconds
-  int _selectedCard = -1;
+  int _remainingTime = totalDuration; //initial time in seconds
+  // int _selectedCard = -1;
 
   late Timer _timer;
 
@@ -179,33 +179,36 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _startTimer(int index) {
     setState(() {
-      _remainingTime = TOTAL_DURATION;
+      _remainingTime = totalDuration;
     });
-    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       setState(() {
-        if (_cancelthetimer) {
-          final player = AudioPlayer(); // Create a player
-          final duration = player.setAsset('audio/notify.mp3');
-          player.play();
+        if (_cancelTimer) {
+          // final player = AudioPlayer(); // Create a player
+          // final duration = player.setAsset('audio/notify.mp3');
+          // player.play();
+          debugPrint('--> _cancelTimer true');
 
           _timer.cancel();
 
-          _remainingTime = TOTAL_DURATION;
+          _remainingTime = totalDuration;
           alreadyRendered.remove(index);
           alreadyTapped.remove(index);
           // _selected_workout = index;
-          _cancelthetimer = false;
+          _cancelTimer = false;
         } else if (_remainingTime > 0) {
           _remainingTime--;
         } else {
-          final player = AudioPlayer(); // Create a player
-          final duration = player.setAsset('audio/notify.mp3');
-          player.play();
+          // final player = AudioPlayer(); // Create a player
+          // final duration = player.setAsset('audio/notify.mp3');
+          // player.play();
+          SystemSound.play(SystemSoundType.click);
+          debugPrint('--> elapsed');
 
           _timer.cancel();
-          _selected_workout = index;
+          _selectedWorkout = index;
           alreadyRendered.add(index);
-          _remainingTime = TOTAL_DURATION;
+          _remainingTime = totalDuration;
         }
       });
     });
@@ -220,7 +223,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Container(
-        color: Color(myMainContainerColor),
+        color: const Color(myMainContainerColor),
         child: CustomScrollView(
           slivers: <Widget>[
             const SliverAppBar(
@@ -245,16 +248,16 @@ class _MyHomePageState extends State<MyHomePage> {
                 (BuildContext context, int index) {
                   return Container(
                       alignment: Alignment.bottomLeft,
-                      color: Color(myTimeAreaColor),
+                      color: const Color(myTimeAreaColor),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          SizedBox(
+                          const SizedBox(
                             height: kMinInteractiveDimension,
                             width: 2,
                           ),
-                          Text(
+                          const Text(
                             "tap icon\nto start:",
                             style: TextStyle(
                               fontSize: 12.0,
@@ -273,7 +276,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                   children: [
                                     Text(
                                       "$_remainingTime",
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                           fontSize: 30.0,
                                           color: Color(myTimeInfoFontColor),
                                           decoration: TextDecoration.none),
@@ -281,11 +284,11 @@ class _MyHomePageState extends State<MyHomePage> {
                                   ],
                                 ),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 width: 5,
                               ),
 
-                              Text(
+                              const Text(
                                 "sec",
                                 style: TextStyle(
                                   fontSize: 15.0,
@@ -297,15 +300,15 @@ class _MyHomePageState extends State<MyHomePage> {
                               IconButton(
                                 // iconSize: 12.0,
                                 onPressed: () {
-                                  _cancelthetimer = true;
+                                  _cancelTimer = true;
                                 },
                                 icon: const Icon(Icons.cancel),
-                                color: Color(myTimeInfoFontColor),
+                                color: const Color(myTimeInfoFontColor),
                               ),
                             ],
                           ),
 
-                          Text(
+                          const Text(
                             "remain:",
                             style: TextStyle(
                               fontSize: 12.0,
@@ -324,7 +327,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                   children: [
                                     Text(
                                       '$_counter',
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                           fontSize: 30.0,
                                           color: Color(myTimeInfoFontColor),
                                           decoration: TextDecoration.none),
@@ -336,7 +339,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           ),
 
                           // todo: replay and stop icons need to be clickable
-                          Row(children: [
+                          const Row(children: [
                             IconButton(
                               onPressed: null,
                               icon: Icon(
@@ -354,7 +357,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             ),
                           ]),
 
-                          SizedBox(
+                          const SizedBox(
                             width: 2.0,
                           ),
                         ],
@@ -378,7 +381,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   // done: need to be clickable
                   return Card(
                     // color: Colors.limeAccent,
-                    color: Color(myCardColor),
+                    color: const Color(myCardColor),
                     clipBehavior: Clip.hardEdge,
                     child: InkWell(
                       onTap: () {
@@ -396,10 +399,10 @@ class _MyHomePageState extends State<MyHomePage> {
                       child: Column(
                         children: [
                           imageList[index].$1,
-                          Container(
+                          SizedBox(
                             width: 100,
                             height: 100,
-                            child: (index != _selected_workout &&
+                            child: (index != _selectedWorkout &&
                                     !alreadyRendered.contains(index))
                                 ? imageList[index].$2
                                 : imageListDone[0].$2,
