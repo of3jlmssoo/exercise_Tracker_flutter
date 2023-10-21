@@ -31,6 +31,9 @@ import 'package:flutter/services.dart';
 // import 'package:tuple/tuple.dart';
 // import 'package:audioplayers/audioplayers.dart';
 // import 'package:just_audio/just_audio.dart';
+import 'package:logging/logging.dart';
+
+final log = Logger('ExampleLogger');
 
 const prepDuration = 2;
 const int workoutDuration = 3;
@@ -135,6 +138,12 @@ List imageList = [
 ];
 
 void main() {
+  Logger.root.level = Level.ALL; // defaults to Level.INFO
+  Logger.root.onRecord.listen((LogRecord rec) {
+    print('[${rec.loggerName}] ${rec.level.name}: ${rec.time}: ${rec.message}');
+  });
+
+  log.info('logging started');
   runApp(const MyApp());
 }
 
@@ -384,6 +393,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         clipBehavior: Clip.hardEdge,
                         child: InkWell(
                           onTap: () {
+                            log.info('>>>>>>>>>>>> $alreadyTapped');
                             debugPrint('>>>>>> $alreadyTapped');
                             alreadyTapped.contains(index)
                                 ? {}
