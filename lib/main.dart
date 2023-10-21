@@ -376,39 +376,76 @@ class _MyHomePageState extends State<MyHomePage> {
                 crossAxisSpacing: 10.0,
                 childAspectRatio: 1.4,
               ),
-              delegate: SliverChildListDelegate([
-                Card(
-                    color: const Color(myCardColor),
-                    clipBehavior: Clip.hardEdge,
-                    child: InkWell(
-                      onTap: () {
-                        debugPrint('>>>>>> $alreadyTapped');
-                        alreadyTapped.contains(0)
-                            ? {}
-                            : {
-                                SystemSound.play(SystemSoundType.click),
-                                // _selected_workout = index,
-                                _incrementCounter(),
-                                _startTimer(0),
-                                alreadyTapped.add(0)
-                              };
-                      },
-                      child: Column(
-                        children: [
-                          imageList[0].$1,
-                          SizedBox(
-                            width: 100,
-                            height: 100,
-                            child: (0 != _selectedWorkout &&
-                                    !alreadyRendered.contains(0))
-                                ? imageList[0].$2
-                                : imageListDone[0].$2,
+              delegate: SliverChildListDelegate(
+                [
+                  for (int index = 0; index < imageList.length; index++) ...{
+                    Card(
+                        color: const Color(myCardColor),
+                        clipBehavior: Clip.hardEdge,
+                        child: InkWell(
+                          onTap: () {
+                            debugPrint('>>>>>> $alreadyTapped');
+                            alreadyTapped.contains(index)
+                                ? {}
+                                : {
+                                    SystemSound.play(SystemSoundType.click),
+                                    // _selected_workout = index,
+                                    _incrementCounter(),
+                                    _startTimer(index),
+                                    alreadyTapped.add(index)
+                                  };
+                          },
+                          child: Column(
+                            children: [
+                              imageList[index].$1,
+                              SizedBox(
+                                width: 100,
+                                height: 100,
+                                child: (index != _selectedWorkout &&
+                                        !alreadyRendered.contains(index))
+                                    ? imageList[index].$2
+                                    : imageListDone[index].$2,
+                              ),
+                              // imageList[index],
+                            ],
                           ),
-                          // imageList[index],
-                        ],
-                      ),
-                    )),
-              ]),
+                        )),
+                  }
+                ],
+                // [
+                //   Card(
+                //       color: const Color(myCardColor),
+                //       clipBehavior: Clip.hardEdge,
+                //       child: InkWell(
+                //         onTap: () {
+                //           debugPrint('>>>>>> $alreadyTapped');
+                //           alreadyTapped.contains(0)
+                //               ? {}
+                //               : {
+                //                   SystemSound.play(SystemSoundType.click),
+                //                   // _selected_workout = index,
+                //                   _incrementCounter(),
+                //                   _startTimer(0),
+                //                   alreadyTapped.add(0)
+                //                 };
+                //         },
+                //         child: Column(
+                //           children: [
+                //             imageList[0].$1,
+                //             SizedBox(
+                //               width: 100,
+                //               height: 100,
+                //               child: (0 != _selectedWorkout &&
+                //                       !alreadyRendered.contains(0))
+                //                   ? imageList[0].$2
+                //                   : imageListDone[0].$2,
+                //             ),
+                //             // imageList[index],
+                //           ],
+                //         ),
+                //       )),
+                // ],
+              ),
               // delegate: SliverChildBuilderDelegate(
               //   (BuildContext context, int index) {
               //     // done: need to be clickable
