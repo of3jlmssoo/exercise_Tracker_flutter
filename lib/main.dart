@@ -28,12 +28,14 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 // import 'package:tuple/tuple.dart';
 // import 'package:audioplayers/audioplayers.dart';
 // import 'package:just_audio/just_audio.dart';
 import 'package:logging/logging.dart';
+import 'timers.dart';
 
-final log = Logger('ExampleLogger');
+final log = Logger('MainLogger');
 
 const prepDuration = 2;
 const int workoutDuration = 3;
@@ -43,7 +45,8 @@ int _selectedWorkout = -1;
 bool _cancelTimer = false;
 // const int NUMBER_OF_WORKOUT = 10;
 const int myAppBarColor = 0xff2C3333;
-const int myCardColor = 0xff5B9A8B;
+// const int myCardColor = 0xff5B9A8B;
+const int myCardColor = 0xff388e3c;
 const int myTimeAreaColor = 0xff2E4F4F;
 const int myMainContainerColor = myTimeAreaColor;
 // const int myAppBarFontColor = 0xFF90a4ae;
@@ -144,7 +147,7 @@ void main() {
   });
 
   log.info('logging started');
-  runApp(const MyApp());
+  runApp(ProviderScope(child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -159,78 +162,84 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'exercise tracker'),
+      home: MyHomePage(title: 'exercise tracker'),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+// class MyHomePage extends StatefulWidget {
+//   const MyHomePage({super.key, required this.title});
+//
+//   final String title;
+//
+//   @override
+//   State<MyHomePage> createState() => _MyHomePageState();
+// }
 
+// class _MyHomePageState extends State<MyHomePage> {
+class MyHomePage extends ConsumerWidget {
+  MyHomePage({super.key, required this.title});
   final String title;
 
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
   int _remainingTime = totalDuration; //initial time in seconds
   // int _selectedCard = -1;
 
   late Timer _timer;
 
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
+  // void _incrementCounter() {
+  //   setState(
+  //     () {
+  //       _counter++;
+  //     },
+  //   );
+  // }
 
-  void _startTimer(int index) {
-    setState(() {
-      _remainingTime = totalDuration;
-    });
-    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      setState(() {
-        if (_cancelTimer) {
-          // final player = AudioPlayer(); // Create a player
-          // final duration = player.setAsset('audio/notify.mp3');
-          // player.play();
-          debugPrint('--> _cancelTimer true');
+  // void _startTimer(int index) {
+  //   setState(() {
+  //     _remainingTime = totalDuration;
+  //   });
+  //   _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+  //     setState(() {
+  //       if (_cancelTimer) {
+  //         // final player = AudioPlayer(); // Create a player
+  //         // final duration = player.setAsset('audio/notify.mp3');
+  //         // player.play();
+  //         debugPrint('--> _cancelTimer true');
+  //
+  //         _timer.cancel();
+  //
+  //         _remainingTime = totalDuration;
+  //         alreadyRendered.remove(index);
+  //         alreadyTapped.remove(index);
+  //         // _selected_workout = index;
+  //         _cancelTimer = false;
+  //       } else if (_remainingTime > 0) {
+  //         _remainingTime--;
+  //       } else {
+  //         // final player = AudioPlayer(); // Create a player
+  //         // final duration = player.setAsset('audio/notify.mp3');
+  //         // player.play();
+  //         SystemSound.play(SystemSoundType.click);
+  //         debugPrint('--> elapsed');
+  //
+  //         _timer.cancel();
+  //         _selectedWorkout = index;
+  //         alreadyRendered.add(index);
+  //         _remainingTime = totalDuration;
+  //       }
+  //     });
+  //   });
+  // }
 
-          _timer.cancel();
-
-          _remainingTime = totalDuration;
-          alreadyRendered.remove(index);
-          alreadyTapped.remove(index);
-          // _selected_workout = index;
-          _cancelTimer = false;
-        } else if (_remainingTime > 0) {
-          _remainingTime--;
-        } else {
-          // final player = AudioPlayer(); // Create a player
-          // final duration = player.setAsset('audio/notify.mp3');
-          // player.play();
-          SystemSound.play(SystemSoundType.click);
-          debugPrint('--> elapsed');
-
-          _timer.cancel();
-          _selectedWorkout = index;
-          alreadyRendered.add(index);
-          _remainingTime = totalDuration;
-        }
-      });
-    });
-  }
+  // @override
+  // void dispose() {
+  //   _timer.cancel();
+  //   super.dispose();
+  // }
 
   @override
-  void dispose() {
-    _timer.cancel();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Container(
         color: const Color(myMainContainerColor),
         child: CustomScrollView(
@@ -284,7 +293,9 @@ class _MyHomePageState extends State<MyHomePage> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Text(
-                                      "$_remainingTime",
+                                      // "$_remainingTime",
+                                      // '${ref.watch(periodicTimerProvider) ~/ 60}:${ref.watch(periodicTimerProvider) % 60}',
+                                      '${ref.watch(periodicTimerProvider) ~/ 60}:${(ref.watch(periodicTimerProvider) % 60).toString().padLeft(2, '0')}',
                                       style: const TextStyle(
                                           fontSize: 30.0,
                                           color: Color(myTimeInfoFontColor),
@@ -309,7 +320,10 @@ class _MyHomePageState extends State<MyHomePage> {
                               IconButton(
                                 // iconSize: 12.0,
                                 onPressed: () {
-                                  _cancelTimer = true;
+                                  // _cancelTimer = true;
+                                  ref
+                                      .read(periodicTimerProvider.notifier)
+                                      .canceltimer();
                                 },
                                 icon: const Icon(Icons.cancel),
                                 color: const Color(myTimeInfoFontColor),
@@ -392,6 +406,8 @@ class _MyHomePageState extends State<MyHomePage> {
                         color: const Color(myCardColor),
                         clipBehavior: Clip.hardEdge,
                         child: InkWell(
+                          highlightColor: Colors.red,
+                          splashColor: Colors.red,
                           onTap: () {
                             log.info('>>>>>>>>>>>> $alreadyTapped');
                             debugPrint('>>>>>> $alreadyTapped');
@@ -399,10 +415,39 @@ class _MyHomePageState extends State<MyHomePage> {
                                 ? {}
                                 : {
                                     SystemSound.play(SystemSoundType.click),
+                                    ref
+                                        .read(periodicTimerProvider.notifier)
+                                        .starttimer(),
                                     // _selected_workout = index,
-                                    _incrementCounter(),
-                                    _startTimer(index),
-                                    alreadyTapped.add(index)
+                                    // _incrementCounter(),
+                                    // _startTimer(index),
+                                    // showDialog(
+                                    //     context: context,
+                                    //     builder: (BuildContext builderContext) {
+                                    //       _timer = Timer(
+                                    //           Duration(
+                                    //               seconds: ref
+                                    //                   .read(
+                                    //                       periodicTimerProvider
+                                    //                           .notifier)
+                                    //                   .state), () {
+                                    //         Navigator.of(context).pop();
+                                    //       });
+                                    //
+                                    //       return AlertDialog(
+                                    //         backgroundColor: Color(myCardColor),
+                                    //         title: Text('Title'),
+                                    //         content: SingleChildScrollView(
+                                    //           child: Text(
+                                    //               '${ref.watch(periodicTimerProvider)} : ${ref.read(periodicTimerProvider.notifier).sec}'),
+                                    //         ),
+                                    //       );
+                                    //     }).then((val) {
+                                    //   if (_timer.isActive) {
+                                    //     _timer.cancel();
+                                    //   }
+                                    // }),
+                                    alreadyTapped.add(index),
                                   };
                           },
                           child: Column(
