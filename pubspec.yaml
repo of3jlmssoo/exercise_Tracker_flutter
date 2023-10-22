@@ -19,6 +19,7 @@ dependencies:
   logging: ^1.2.0
   flutter_riverpod: ^2.4.4
   riverpod_annotation: ^2.2.1
+  uuid: ^4.1.0
 
 dev_dependencies:
   flutter_test:

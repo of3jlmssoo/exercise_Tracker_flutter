@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logging/logging.dart';
+import 'package:uuid/uuid.dart';
 
 import 'timers.dart';
 
@@ -51,6 +52,89 @@ class Exercise {
   final String id;
   final String name;
   final String imageasset;
+}
+
+class ExerciseList extends Notifier<List<Exercise>> {
+  @override
+  List<Exercise> build() => [
+        // const Todo(id: 'todo-0', description: 'Buy cookies'),
+        // const Todo(id: 'todo-1', description: 'Star Riverpod'),
+        // const Todo(id: 'todo-2', description: 'Have a walk'),
+        const Exercise(
+          id: 'exercise-0',
+          name: 'pullDown',
+          imageasset: 'images/pullDown.png',
+        ),
+        const Exercise(
+            id: 'exercise-1', name: 'pull', imageasset: 'images/pull.png'),
+
+        // (
+        //   const Text('openArms'),
+        //   Image.asset(
+        //     'images/openArms.png',
+        //     fit: BoxFit.contain,
+        //   )
+        // ),
+        // (
+        //   const Text('closeArms'),
+        //   Image.asset(
+        //     'images/closeArms.png',
+        //     fit: BoxFit.contain,
+        //   )
+        // ),
+        // (
+        //   const Text('core'),
+        //   Image.asset(
+        //     'images/core.png',
+        //     fit: BoxFit.contain,
+        //   )
+        // ),
+        // (
+        //   const Text('core'),
+        //   Image.asset(
+        //     'images/core.png',
+        //     fit: BoxFit.contain,
+        //   )
+        // ),
+        // (
+        //   const Text('push'),
+        //   Image.asset(
+        //     'images/push.png',
+        //     fit: BoxFit.contain,
+        //   )
+        // ),
+        // (
+        //   const Text('hamstring'),
+        //   Image.asset(
+        //     'images/hamstring.png',
+        //     fit: BoxFit.contain,
+        //   )
+        // ),
+        // (
+        //   const Text('openFeet'),
+        //   Image.asset(
+        //     'images/openFeet.png',
+        //     fit: BoxFit.contain,
+        //   )
+        // ),
+        // (
+        //   const Text('closeFeet'),
+        //   Image.asset(
+        //     'images/closeFeet.png',
+        //     fit: BoxFit.contain,
+        //   )
+        // ),
+      ];
+
+  void add(String name) {
+    state = [
+      ...state,
+      Exercise(
+        id: _uuid.v4(),
+        name: name,
+      ),
+    ];
+  }
 }
 
 List exerciseInputs = [
