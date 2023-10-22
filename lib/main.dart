@@ -1,38 +1,10 @@
-// todo: the color of the cancel icon
-// todo: visibility of the cancel icon
-//        when the timer is running, visible
-//        otherwise non-visible
-
-// todo: move time info are to "title"
-
-// done: make the cancel icon functional
-// todo: test the cancel function
-
-// todo: reverse the workout counter. use alreadyRendered length
-// todo: move time info area layout to an another .dart
-
-// done:    tap icon to start  5:15 sec  ✖ ⏰   🖊  remaings
-// done: group "5 sec cancel icon"
-// done: group "alarm icon and edit icons"
-// done:  add "remaing:" on the top of the time info area before the count
-// todo: make the timer(alarm) icon functional, showimepiicker to set the duration
-// todo: make workout menu icon functional
-
-// todo: make a hamburger icon on the right hand side of the information area
-// todo: move the alarm icon and the edit icon to the hamburger icon
-// todo: make a new icon, view, to show the workout log
-
-// todo: scheduleTimeout to make beep sounds. at the end of prep and workout
-// done: make beep sound at the end of the workout
+import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'dart:async';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-// import 'package:tuple/tuple.dart';
-// import 'package:audioplayers/audioplayers.dart';
-// import 'package:just_audio/just_audio.dart';
 import 'package:logging/logging.dart';
+
 import 'timers.dart';
 
 final log = Logger('MainLogger');
@@ -167,16 +139,6 @@ class MyApp extends StatelessWidget {
   }
 }
 
-// class MyHomePage extends StatefulWidget {
-//   const MyHomePage({super.key, required this.title});
-//
-//   final String title;
-//
-//   @override
-//   State<MyHomePage> createState() => _MyHomePageState();
-// }
-
-// class _MyHomePageState extends State<MyHomePage> {
 class MyHomePage extends ConsumerWidget {
   MyHomePage({super.key, required this.title});
   final String title;
@@ -186,57 +148,6 @@ class MyHomePage extends ConsumerWidget {
   // int _selectedCard = -1;
 
   late Timer _timer;
-
-  // void _incrementCounter() {
-  //   setState(
-  //     () {
-  //       _counter++;
-  //     },
-  //   );
-  // }
-
-  // void _startTimer(int index) {
-  //   setState(() {
-  //     _remainingTime = totalDuration;
-  //   });
-  //   _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-  //     setState(() {
-  //       if (_cancelTimer) {
-  //         // final player = AudioPlayer(); // Create a player
-  //         // final duration = player.setAsset('audio/notify.mp3');
-  //         // player.play();
-  //         debugPrint('--> _cancelTimer true');
-  //
-  //         _timer.cancel();
-  //
-  //         _remainingTime = totalDuration;
-  //         alreadyRendered.remove(index);
-  //         alreadyTapped.remove(index);
-  //         // _selected_workout = index;
-  //         _cancelTimer = false;
-  //       } else if (_remainingTime > 0) {
-  //         _remainingTime--;
-  //       } else {
-  //         // final player = AudioPlayer(); // Create a player
-  //         // final duration = player.setAsset('audio/notify.mp3');
-  //         // player.play();
-  //         SystemSound.play(SystemSoundType.click);
-  //         debugPrint('--> elapsed');
-  //
-  //         _timer.cancel();
-  //         _selectedWorkout = index;
-  //         alreadyRendered.add(index);
-  //         _remainingTime = totalDuration;
-  //       }
-  //     });
-  //   });
-  // }
-
-  // @override
-  // void dispose() {
-  //   _timer.cancel();
-  //   super.dispose();
-  // }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -418,35 +329,6 @@ class MyHomePage extends ConsumerWidget {
                                     ref
                                         .read(periodicTimerProvider.notifier)
                                         .starttimer(),
-                                    // _selected_workout = index,
-                                    // _incrementCounter(),
-                                    // _startTimer(index),
-                                    // showDialog(
-                                    //     context: context,
-                                    //     builder: (BuildContext builderContext) {
-                                    //       _timer = Timer(
-                                    //           Duration(
-                                    //               seconds: ref
-                                    //                   .read(
-                                    //                       periodicTimerProvider
-                                    //                           .notifier)
-                                    //                   .state), () {
-                                    //         Navigator.of(context).pop();
-                                    //       });
-                                    //
-                                    //       return AlertDialog(
-                                    //         backgroundColor: Color(myCardColor),
-                                    //         title: Text('Title'),
-                                    //         content: SingleChildScrollView(
-                                    //           child: Text(
-                                    //               '${ref.watch(periodicTimerProvider)} : ${ref.read(periodicTimerProvider.notifier).sec}'),
-                                    //         ),
-                                    //       );
-                                    //     }).then((val) {
-                                    //   if (_timer.isActive) {
-                                    //     _timer.cancel();
-                                    //   }
-                                    // }),
                                     alreadyTapped.add(index),
                                   };
                           },
@@ -467,79 +349,7 @@ class MyHomePage extends ConsumerWidget {
                         )),
                   }
                 ],
-                // [
-                //   Card(
-                //       color: const Color(myCardColor),
-                //       clipBehavior: Clip.hardEdge,
-                //       child: InkWell(
-                //         onTap: () {
-                //           debugPrint('>>>>>> $alreadyTapped');
-                //           alreadyTapped.contains(0)
-                //               ? {}
-                //               : {
-                //                   SystemSound.play(SystemSoundType.click),
-                //                   // _selected_workout = index,
-                //                   _incrementCounter(),
-                //                   _startTimer(0),
-                //                   alreadyTapped.add(0)
-                //                 };
-                //         },
-                //         child: Column(
-                //           children: [
-                //             imageList[0].$1,
-                //             SizedBox(
-                //               width: 100,
-                //               height: 100,
-                //               child: (0 != _selectedWorkout &&
-                //                       !alreadyRendered.contains(0))
-                //                   ? imageList[0].$2
-                //                   : imageListDone[0].$2,
-                //             ),
-                //             // imageList[index],
-                //           ],
-                //         ),
-                //       )),
-                // ],
               ),
-              // delegate: SliverChildBuilderDelegate(
-              //   (BuildContext context, int index) {
-              //     // done: need to be clickable
-              //     return Card(
-              //       // color: Colors.limeAccent,
-              //       color: const Color(myCardColor),
-              //       clipBehavior: Clip.hardEdge,
-              //       child: InkWell(
-              //         onTap: () {
-              //           debugPrint('>>>>>> $alreadyTapped');
-              //           alreadyTapped.contains(index)
-              //               ? {}
-              //               : {
-              //                   SystemSound.play(SystemSoundType.click),
-              //                   // _selected_workout = index,
-              //                   _incrementCounter(),
-              //                   _startTimer(index),
-              //                   alreadyTapped.add(index)
-              //                 };
-              //         },
-              //         child: Column(
-              //           children: [
-              //             imageList[index].$1,
-              //             SizedBox(
-              //               width: 100,
-              //               height: 100,
-              //               child: (index != _selectedWorkout &&
-              //                       !alreadyRendered.contains(index))
-              //                   ? imageList[index].$2
-              //                   : imageListDone[0].$2,
-              //             ),
-              //             // imageList[index],
-              //           ],
-              //         ),
-              //       ),
-              //     );
-              //   },
-              //   childCount: imageList.length,
-              // ),
             ),
           ],
         ));
