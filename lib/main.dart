@@ -39,7 +39,21 @@ List imageListDone = [
     )
   )
 ];
-List imageList = [
+
+@immutable
+class Exercise {
+  const Exercise({
+    required this.id,
+    required this.name,
+    required this.imageasset,
+  });
+
+  final String id;
+  final String name;
+  final String imageasset;
+}
+
+List exerciseInputs = [
   (
     const Text('pullDown'),
     Image.asset(
