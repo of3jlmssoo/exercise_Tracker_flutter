@@ -9,6 +9,7 @@ import 'package:uuid/uuid.dart';
 import 'timers.dart';
 
 final log = Logger('MainLogger');
+const _uuid = Uuid();
 
 const prepDuration = 2;
 const int workoutDuration = 3;
@@ -41,17 +42,44 @@ List imageListDone = [
   )
 ];
 
+final todoListProvider =
+    NotifierProvider<ExerciseList, List<Exercise>>(ExerciseList.new);
+
+enum ExerciseListFilter {
+  all,
+  active,
+  completed,
+}
+
+final exerciseListFilter = StateProvider((_) => ExerciseListFilter.all);
+
+final filteredExercises = Provider<List<Exercise>>((ref) {
+  final filter = ref.watch(exerciseListFilter);
+  final todos = ref.watch(todoListProvider);
+
+  switch (filter) {
+    case ExerciseListFilter.completed:
+      return todos.where((todo) => todo.completed).toList();
+    case ExerciseListFilter.active:
+      return todos.where((todo) => !todo.completed).toList();
+    case ExerciseListFilter.all:
+      return todos;
+  }
+});
+
 @immutable
 class Exercise {
   const Exercise({
     required this.id,
     required this.name,
     required this.imageasset,
+    this.completed = false,
   });
 
   final String id;
   final String name;
   final String imageasset;
+  final bool completed;
 }
 
 class ExerciseList extends Notifier<List<Exercise>> {
@@ -61,13 +89,11 @@ class ExerciseList extends Notifier<List<Exercise>> {
         // const Todo(id: 'todo-1', description: 'Star Riverpod'),
         // const Todo(id: 'todo-2', description: 'Have a walk'),
         const Exercise(
-          id: 'exercise-0',
-          name: 'pullDown',
-          imageasset: 'images/pullDown.png',
-        ),
+            id: 'exercise-0',
+            name: 'pullDown',
+            imageasset: 'images/pullDown.png'),
         const Exercise(
             id: 'exercise-1', name: 'pull', imageasset: 'images/pull.png'),
-
         // (
         //   const Text('openArms'),
         //   Image.asset(
@@ -126,15 +152,35 @@ class ExerciseList extends Notifier<List<Exercise>> {
         // ),
       ];
 
-  void add(String name) {
+  void add(String name, String imageasset) {
     state = [
       ...state,
       Exercise(
         id: _uuid.v4(),
         name: name,
+        imageasset: imageasset,
       ),
     ];
   }
+
+  void toggle(String id) {
+    state = [
+      for (final exercise in state)
+        if (exercise.id == id)
+          Exercise(
+            id: exercise.id,
+            completed: !exercise.completed,
+            name: exercise.name,
+            imageasset: 'images/done.png',
+          )
+        else
+          exercise,
+    ];
+  }
+
+  // void remove(Exercise target) {
+  //   state = state.where((todo) => todo.id != target.id).toList();
+  // }
 }
 
 List exerciseInputs = [
@@ -232,23 +278,25 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: MyHomePage(title: 'exercise tracker'),
+      // home: MyHomePage(title: 'exercise tracker'),
+      home: MyHomePage(),
     );
   }
 }
 
 class MyHomePage extends ConsumerWidget {
-  MyHomePage({super.key, required this.title});
-  final String title;
+  MyHomePage({super.key});
+  // final String title;
 
-  int _counter = 0;
-  int _remainingTime = totalDuration; //initial time in seconds
+  // int _counter = 0;
+  // int _remainingTime = totalDuration; //initial time in seconds
   // int _selectedCard = -1;
 
-  late Timer _timer;
+  // late Timer _timer;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final exercises = ref.watch(filteredExercises);
     return Container(
         color: const Color(myMainContainerColor),
         child: CustomScrollView(
@@ -349,7 +397,7 @@ class MyHomePage extends ConsumerWidget {
                             ),
                           ),
 
-                          Row(
+                          const Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               SizedBox(
@@ -358,8 +406,8 @@ class MyHomePage extends ConsumerWidget {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Text(
-                                      '$_counter',
-                                      style: const TextStyle(
+                                      '0',
+                                      style: TextStyle(
                                           fontSize: 30.0,
                                           color: Color(myTimeInfoFontColor),
                                           decoration: TextDecoration.none),
@@ -410,7 +458,7 @@ class MyHomePage extends ConsumerWidget {
               ),
               delegate: SliverChildListDelegate(
                 [
-                  for (int index = 0; index < imageList.length; index++) ...{
+                  for (int index = 0; index < exercises.length; index++) ...{
                     Card(
                         color: const Color(myCardColor),
                         clipBehavior: Clip.hardEdge,
@@ -432,13 +480,18 @@ class MyHomePage extends ConsumerWidget {
                           },
                           child: Column(
                             children: [
-                              imageList[index].$1,
+                              // imageList[index].$1,
+                              Text(exercises[index].name),
+
                               SizedBox(
                                 width: 100,
                                 height: 100,
                                 child: (index != _selectedWorkout &&
                                         !alreadyRendered.contains(index))
-                                    ? imageList[index].$2
+                                    ? Image.asset(
+                                        exercises[index].imageasset,
+                                        fit: BoxFit.contain,
+                                      )
                                     : imageListDone[index].$2,
                               ),
                               // imageList[index],
