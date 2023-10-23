@@ -1,9 +1,10 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logging/logging.dart';
 import 'package:uuid/uuid.dart';
-import 'dart:async';
 
 import 'timers.dart';
 
@@ -411,26 +412,48 @@ class MyHomePage extends ConsumerWidget {
 
 int dura = 1;
 
-void startbeeptimer() {
-  log.info('startbeeptimer()');
-  var counter = 5;
-  SystemSound.play(SystemSoundType.click);
-  Timer.periodic(Duration(seconds: dura), (timer) {
-    SystemSound.play(SystemSoundType.click);
-    print(timer.tick);
-    counter--;
-    if (counter == 0) {
-      print('Cancel timer');
-      timer.cancel();
-    }
-  });
+// void startbeeptimer() {
+//   log.info('startbeeptimer()');
+//   var counter = 5;
+//   SystemSound.play(SystemSoundType.click);
+//   Timer.periodic(Duration(seconds: dura), (timer) {
+//     SystemSound.play(SystemSoundType.click);
+//     print(timer.tick);
+//     counter--;
+//     if (counter == 0) {
+//       print('Cancel timer');
+//       timer.cancel();
+//     }
+//   });
+// }
+
+final timerValProvider = NotifierProvider<TimerVal, int>(TimerVal.new);
+
+class TimerVal extends Notifier<int> {
+  @override
+  int build() => 2;
 }
 
-class SecondRoute extends StatelessWidget {
+class SecondRoute extends ConsumerWidget {
   const SecondRoute({super.key});
 
+  void startbeeptimer(WidgetRef ref) {
+    log.info('startbeeptimer()');
+    var counter = 5;
+    SystemSound.play(SystemSoundType.click);
+    Timer.periodic(Duration(seconds: ref.read(timerValProvider)), (timer) {
+      SystemSound.play(SystemSoundType.click);
+      print(timer.tick);
+      counter--;
+      if (counter == 0) {
+        print('Cancel timer');
+        timer.cancel();
+      }
+    });
+  }
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Second Route'),
@@ -448,7 +471,7 @@ class SecondRoute extends StatelessWidget {
           ),
           TextButton(
               onPressed: () {
-                startbeeptimer();
+                startbeeptimer(ref);
               },
               child: Text('start timer')),
           ElevatedButton(
