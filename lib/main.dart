@@ -17,10 +17,14 @@ const int totalDuration = prepDuration + workoutDuration;
 
 int _selectedWorkout = -1;
 bool _cancelTimer = false;
+
 // const int NUMBER_OF_WORKOUT = 10;
+
+const double normalFontSize = 15.0;
+const double largeFontSize = 24.0;
 const int myAppBarColor = 0xff2C3333;
 // const int myCardColor = 0xff5B9A8B;
-const int myCardColor = 0xff388e3c;
+const int myCardColor = 0xff5C8374;
 const int myTimeAreaColor = 0xff2E4F4F;
 const int myMainContainerColor = myTimeAreaColor;
 // const int myAppBarFontColor = 0xFF90a4ae;
@@ -42,7 +46,7 @@ List imageListDone = [
   )
 ];
 
-final todoListProvider =
+final exerciseListProvider =
     NotifierProvider<ExerciseList, List<Exercise>>(ExerciseList.new);
 
 enum ExerciseListFilter {
@@ -55,7 +59,7 @@ final exerciseListFilter = StateProvider((_) => ExerciseListFilter.all);
 
 final filteredExercises = Provider<List<Exercise>>((ref) {
   final filter = ref.watch(exerciseListFilter);
-  final todos = ref.watch(todoListProvider);
+  final todos = ref.watch(exerciseListProvider);
 
   switch (filter) {
     case ExerciseListFilter.completed:
@@ -74,61 +78,40 @@ class Exercise {
     required this.name,
     required this.imageasset,
     this.completed = false,
+    this.fontsize = normalFontSize,
   });
 
   final String id;
   final String name;
   final String imageasset;
   final bool completed;
+  final double fontsize;
 }
 
 class ExerciseList extends Notifier<List<Exercise>> {
   @override
   List<Exercise> build() => [
-        // const Todo(id: 'todo-0', description: 'Buy cookies'),
-        // const Todo(id: 'todo-1', description: 'Star Riverpod'),
-        // const Todo(id: 'todo-2', description: 'Have a walk'),
         const Exercise(
             id: 'exercise-0',
             name: 'pullDown',
             imageasset: 'images/pullDown.png'),
         const Exercise(
             id: 'exercise-1', name: 'pull', imageasset: 'images/pull.png'),
-        // (
-        //   const Text('openArms'),
-        //   Image.asset(
-        //     'images/openArms.png',
-        //     fit: BoxFit.contain,
-        //   )
-        // ),
-        // (
-        //   const Text('closeArms'),
-        //   Image.asset(
-        //     'images/closeArms.png',
-        //     fit: BoxFit.contain,
-        //   )
-        // ),
-        // (
-        //   const Text('core'),
-        //   Image.asset(
-        //     'images/core.png',
-        //     fit: BoxFit.contain,
-        //   )
-        // ),
-        // (
-        //   const Text('core'),
-        //   Image.asset(
-        //     'images/core.png',
-        //     fit: BoxFit.contain,
-        //   )
-        // ),
-        // (
-        //   const Text('push'),
-        //   Image.asset(
-        //     'images/push.png',
-        //     fit: BoxFit.contain,
-        //   )
-        // ),
+        const Exercise(
+            id: 'exercise-2',
+            name: 'openArms',
+            imageasset: 'images/openArms.png'),
+        const Exercise(
+            id: 'exercise-3',
+            name: 'closeArms',
+            imageasset: 'images/closeArms.png'),
+        const Exercise(
+            id: 'exercise-4', name: 'core', imageasset: 'images/core.png'),
+        const Exercise(
+            id: 'exercise-5', name: 'core', imageasset: 'images/core.png'),
+        const Exercise(
+            id: 'exercise-6', name: 'push', imageasset: 'images/push.png'),
+
         // (
         //   const Text('hamstring'),
         //   Image.asset(
@@ -163,7 +146,8 @@ class ExerciseList extends Notifier<List<Exercise>> {
     ];
   }
 
-  void toggle(String id) {
+  void setDone(String id) {
+    log.info('setDone ------------------------');
     state = [
       for (final exercise in state)
         if (exercise.id == id)
@@ -172,7 +156,27 @@ class ExerciseList extends Notifier<List<Exercise>> {
             completed: !exercise.completed,
             name: exercise.name,
             imageasset: 'images/done.png',
+            fontsize: normalFontSize,
           )
+        else
+          exercise,
+    ];
+  }
+
+  void toggleTitle(String id) {
+    state = [
+      for (final exercise in state)
+        if (exercise.id == id)
+          Exercise(
+              id: exercise.id,
+              completed: !exercise.completed,
+              name: exercise.name,
+              imageasset: exercise.imageasset, //'images/done.png',
+              fontsize: largeFontSize
+              // fontsize: exercise.fontsize == largeFontSize
+              //     ? normalFontSize
+              //     : largeFontSize,
+              )
         else
           exercise,
     ];
@@ -460,40 +464,54 @@ class MyHomePage extends ConsumerWidget {
                 [
                   for (int index = 0; index < exercises.length; index++) ...{
                     Card(
-                        color: const Color(myCardColor),
+                        color: Color(myCardColor),
                         clipBehavior: Clip.hardEdge,
                         child: InkWell(
                           highlightColor: Colors.red,
-                          splashColor: Colors.red,
+                          splashColor: Color(0xff445D48),
                           onTap: () {
-                            log.info('>>>>>>>>>>>> $alreadyTapped');
-                            debugPrint('>>>>>> $alreadyTapped');
-                            alreadyTapped.contains(index)
-                                ? {}
-                                : {
-                                    SystemSound.play(SystemSoundType.click),
-                                    ref
-                                        .read(periodicTimerProvider.notifier)
-                                        .starttimer(),
-                                    alreadyTapped.add(index),
-                                  };
+                            if (exercises[index].name != 'core') {
+                              log.info('Card InkWell onTap()');
+                              SystemSound.play(SystemSoundType.click);
+                              ref
+                                  .read(periodicTimerProvider.notifier)
+                                  .starttimer(() => {
+                                        ref
+                                            .read(exerciseListProvider.notifier)
+                                            .toggleTitle(exercises[index].id),
+                                        ref
+                                            .read(exerciseListProvider.notifier)
+                                            .setDone(exercises[index].id),
+                                      });
+                              // alreadyTapped.add(index);
+                              ref
+                                  .read(exerciseListProvider.notifier)
+                                  .toggleTitle(exercises[index].id);
+                            }
                           },
                           child: Column(
                             children: [
                               // imageList[index].$1,
-                              Text(exercises[index].name),
-
-                              SizedBox(
-                                width: 100,
-                                height: 100,
-                                child: (index != _selectedWorkout &&
-                                        !alreadyRendered.contains(index))
-                                    ? Image.asset(
-                                        exercises[index].imageasset,
-                                        fit: BoxFit.contain,
-                                      )
-                                    : imageListDone[index].$2,
+                              Text(
+                                exercises[index].name,
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: exercises[index].fontsize!),
                               ),
+                              SizedBox(
+                                  width: 100,
+                                  height: 100,
+                                  // child: (index != _selectedWorkout &&
+                                  //         !alreadyRendered.contains(index))
+                                  //     ? Image.asset(
+                                  //         exercises[index].imageasset,
+                                  //         fit: BoxFit.contain,
+                                  //       )
+                                  //     : imageListDone[index].$2,
+                                  child: Image.asset(
+                                    exercises[index].imageasset,
+                                    fit: BoxFit.contain,
+                                  )),
                               // imageList[index],
                             ],
                           ),
