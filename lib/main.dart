@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logging/logging.dart';
 import 'package:uuid/uuid.dart';
+import 'dart:async';
 
 import 'timers.dart';
 
@@ -370,6 +371,12 @@ class MyHomePage extends ConsumerWidget {
                             ref
                                 .read(exerciseListProvider.notifier)
                                 .toggleTitle(exercises[index].id);
+                          } else {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const SecondRoute()),
+                            );
                           }
                         },
                         child: Column(
@@ -399,5 +406,60 @@ class MyHomePage extends ConsumerWidget {
             ),
           ],
         ));
+  }
+}
+
+int dura = 1;
+
+void startbeeptimer() {
+  log.info('startbeeptimer()');
+  var counter = 5;
+  SystemSound.play(SystemSoundType.click);
+  Timer.periodic(Duration(seconds: dura), (timer) {
+    SystemSound.play(SystemSoundType.click);
+    print(timer.tick);
+    counter--;
+    if (counter == 0) {
+      print('Cancel timer');
+      timer.cancel();
+    }
+  });
+}
+
+class SecondRoute extends StatelessWidget {
+  const SecondRoute({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Second Route'),
+      ),
+      body: Column(
+        children: [
+          IconButton(
+            icon: const Icon(Icons.volume_up),
+            tooltip: 'Increase volume by 10',
+            onPressed: () {
+              log.info('SecondRoute()1 ${dura}');
+              dura += 1;
+              log.info('SecondRoute()2 ${dura}');
+            },
+          ),
+          TextButton(
+              onPressed: () {
+                startbeeptimer();
+              },
+              child: Text('start timer')),
+          ElevatedButton(
+            onPressed: () {
+              // Navigate back to first route when tapped.
+              Navigator.pop(context);
+            },
+            child: const Text('Go back!'),
+          ),
+        ],
+      ),
+    );
   }
 }
