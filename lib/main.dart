@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -15,9 +13,8 @@ const prepDuration = 2;
 const int workoutDuration = 3;
 const int totalDuration = prepDuration + workoutDuration;
 
-int _selectedWorkout = -1;
-bool _cancelTimer = false;
-
+// int _selectedWorkout = -1;
+// bool _cancelTimer = false;
 // const int NUMBER_OF_WORKOUT = 10;
 
 const double normalFontSize = 15.0;
@@ -111,28 +108,18 @@ class ExerciseList extends Notifier<List<Exercise>> {
             id: 'exercise-5', name: 'core', imageasset: 'images/core.png'),
         const Exercise(
             id: 'exercise-6', name: 'push', imageasset: 'images/push.png'),
-
-        // (
-        //   const Text('hamstring'),
-        //   Image.asset(
-        //     'images/hamstring.png',
-        //     fit: BoxFit.contain,
-        //   )
-        // ),
-        // (
-        //   const Text('openFeet'),
-        //   Image.asset(
-        //     'images/openFeet.png',
-        //     fit: BoxFit.contain,
-        //   )
-        // ),
-        // (
-        //   const Text('closeFeet'),
-        //   Image.asset(
-        //     'images/closeFeet.png',
-        //     fit: BoxFit.contain,
-        //   )
-        // ),
+        const Exercise(
+            id: 'exercise-7',
+            name: 'hamstring',
+            imageasset: 'images/hamstring.png'),
+        const Exercise(
+            id: 'exercise-8',
+            name: 'openFeet',
+            imageasset: 'images/openFeet.png'),
+        const Exercise(
+            id: 'exercise-9',
+            name: 'closeFeet',
+            imageasset: 'images/closeFeet.png'),
       ];
 
   void add(String name, String imageasset) {
@@ -147,7 +134,7 @@ class ExerciseList extends Notifier<List<Exercise>> {
   }
 
   void setDone(String id) {
-    log.info('setDone ------------------------');
+    log.info('setDone(${id})');
     state = [
       for (final exercise in state)
         if (exercise.id == id)
@@ -172,93 +159,12 @@ class ExerciseList extends Notifier<List<Exercise>> {
               completed: !exercise.completed,
               name: exercise.name,
               imageasset: exercise.imageasset, //'images/done.png',
-              fontsize: largeFontSize
-              // fontsize: exercise.fontsize == largeFontSize
-              //     ? normalFontSize
-              //     : largeFontSize,
-              )
+              fontsize: largeFontSize)
         else
           exercise,
     ];
   }
-
-  // void remove(Exercise target) {
-  //   state = state.where((todo) => todo.id != target.id).toList();
-  // }
 }
-
-List exerciseInputs = [
-  (
-    const Text('pullDown'),
-    Image.asset(
-      'images/pullDown.png',
-      fit: BoxFit.contain,
-    )
-  ),
-  (
-    const Text('pull'),
-    Image.asset(
-      'images/pull.png',
-      fit: BoxFit.contain,
-    )
-  ),
-  (
-    const Text('openArms'),
-    Image.asset(
-      'images/openArms.png',
-      fit: BoxFit.contain,
-    )
-  ),
-  (
-    const Text('closeArms'),
-    Image.asset(
-      'images/closeArms.png',
-      fit: BoxFit.contain,
-    )
-  ),
-  (
-    const Text('core'),
-    Image.asset(
-      'images/core.png',
-      fit: BoxFit.contain,
-    )
-  ),
-  (
-    const Text('core'),
-    Image.asset(
-      'images/core.png',
-      fit: BoxFit.contain,
-    )
-  ),
-  (
-    const Text('push'),
-    Image.asset(
-      'images/push.png',
-      fit: BoxFit.contain,
-    )
-  ),
-  (
-    const Text('hamstring'),
-    Image.asset(
-      'images/hamstring.png',
-      fit: BoxFit.contain,
-    )
-  ),
-  (
-    const Text('openFeet'),
-    Image.asset(
-      'images/openFeet.png',
-      fit: BoxFit.contain,
-    )
-  ),
-  (
-    const Text('closeFeet'),
-    Image.asset(
-      'images/closeFeet.png',
-      fit: BoxFit.contain,
-    )
-  ),
-];
 
 void main() {
   Logger.root.level = Level.ALL; // defaults to Level.INFO
@@ -267,13 +173,12 @@ void main() {
   });
 
   log.info('logging started');
-  runApp(ProviderScope(child: const MyApp()));
+  runApp(const ProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -282,21 +187,13 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      // home: MyHomePage(title: 'exercise tracker'),
-      home: MyHomePage(),
+      home: const MyHomePage(),
     );
   }
 }
 
 class MyHomePage extends ConsumerWidget {
-  MyHomePage({super.key});
-  // final String title;
-
-  // int _counter = 0;
-  // int _remainingTime = totalDuration; //initial time in seconds
-  // int _selectedCard = -1;
-
-  // late Timer _timer;
+  const MyHomePage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -344,7 +241,6 @@ class MyHomePage extends ConsumerWidget {
                               decoration: TextDecoration.none,
                             ),
                           ),
-
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
@@ -354,8 +250,6 @@ class MyHomePage extends ConsumerWidget {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Text(
-                                      // "$_remainingTime",
-                                      // '${ref.watch(periodicTimerProvider) ~/ 60}:${ref.watch(periodicTimerProvider) % 60}',
                                       '${ref.watch(periodicTimerProvider) ~/ 60}:${(ref.watch(periodicTimerProvider) % 60).toString().padLeft(2, '0')}',
                                       style: const TextStyle(
                                           fontSize: 30.0,
@@ -368,7 +262,6 @@ class MyHomePage extends ConsumerWidget {
                               const SizedBox(
                                 width: 5,
                               ),
-
                               const Text(
                                 "sec",
                                 style: TextStyle(
@@ -377,11 +270,8 @@ class MyHomePage extends ConsumerWidget {
                                   decoration: TextDecoration.none,
                                 ),
                               ),
-                              // ),
                               IconButton(
-                                // iconSize: 12.0,
                                 onPressed: () {
-                                  // _cancelTimer = true;
                                   ref
                                       .read(periodicTimerProvider.notifier)
                                       .canceltimer();
@@ -391,7 +281,6 @@ class MyHomePage extends ConsumerWidget {
                               ),
                             ],
                           ),
-
                           const Text(
                             "remain:",
                             style: TextStyle(
@@ -400,7 +289,6 @@ class MyHomePage extends ConsumerWidget {
                               decoration: TextDecoration.none,
                             ),
                           ),
-
                           const Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
@@ -421,8 +309,6 @@ class MyHomePage extends ConsumerWidget {
                               ),
                             ],
                           ),
-
-                          // todo: replay and stop icons need to be clickable
                           const Row(children: [
                             IconButton(
                               onPressed: null,
@@ -440,14 +326,11 @@ class MyHomePage extends ConsumerWidget {
                               ),
                             ),
                           ]),
-
                           const SizedBox(
                             width: 2.0,
                           ),
                         ],
-                      )
-                      // done:need to two icons, play and reset
-                      );
+                      ));
                 },
                 childCount: 1,
               ),
@@ -464,58 +347,52 @@ class MyHomePage extends ConsumerWidget {
                 [
                   for (int index = 0; index < exercises.length; index++) ...{
                     Card(
-                        color: Color(myCardColor),
-                        clipBehavior: Clip.hardEdge,
-                        child: InkWell(
-                          highlightColor: Colors.red,
-                          splashColor: Color(0xff445D48),
-                          onTap: () {
-                            if (exercises[index].name != 'core') {
-                              log.info('Card InkWell onTap()');
-                              SystemSound.play(SystemSoundType.click);
-                              ref
-                                  .read(periodicTimerProvider.notifier)
-                                  .starttimer(() => {
-                                        ref
-                                            .read(exerciseListProvider.notifier)
-                                            .toggleTitle(exercises[index].id),
-                                        ref
-                                            .read(exerciseListProvider.notifier)
-                                            .setDone(exercises[index].id),
-                                      });
-                              // alreadyTapped.add(index);
-                              ref
-                                  .read(exerciseListProvider.notifier)
-                                  .toggleTitle(exercises[index].id);
-                            }
-                          },
-                          child: Column(
-                            children: [
-                              // imageList[index].$1,
-                              Text(
-                                exercises[index].name,
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: exercises[index].fontsize!),
-                              ),
-                              SizedBox(
-                                  width: 100,
-                                  height: 100,
-                                  // child: (index != _selectedWorkout &&
-                                  //         !alreadyRendered.contains(index))
-                                  //     ? Image.asset(
-                                  //         exercises[index].imageasset,
-                                  //         fit: BoxFit.contain,
-                                  //       )
-                                  //     : imageListDone[index].$2,
-                                  child: Image.asset(
-                                    exercises[index].imageasset,
-                                    fit: BoxFit.contain,
-                                  )),
-                              // imageList[index],
-                            ],
-                          ),
-                        )),
+                      color: Color(myCardColor),
+                      clipBehavior: Clip.hardEdge,
+                      child: InkWell(
+                        highlightColor: Colors.red,
+                        splashColor: Color(0xff445D48),
+                        onTap: () {
+                          if (exercises[index].name != 'core') {
+                            log.info('Card InkWell onTap()');
+                            SystemSound.play(SystemSoundType.click);
+                            ref
+                                .read(periodicTimerProvider.notifier)
+                                .starttimer(() => {
+                                      ref
+                                          .read(exerciseListProvider.notifier)
+                                          .toggleTitle(exercises[index].id),
+                                      ref
+                                          .read(exerciseListProvider.notifier)
+                                          .setDone(exercises[index].id),
+                                    });
+
+                            ref
+                                .read(exerciseListProvider.notifier)
+                                .toggleTitle(exercises[index].id);
+                          }
+                        },
+                        child: Column(
+                          children: [
+                            // imageList[index].$1,
+                            Text(
+                              exercises[index].name,
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: exercises[index].fontsize),
+                            ),
+                            SizedBox(
+                                width: 100,
+                                height: 100,
+                                child: Image.asset(
+                                  exercises[index].imageasset,
+                                  fit: BoxFit.contain,
+                                )),
+                            // imageList[index],
+                          ],
+                        ),
+                      ),
+                    ),
                   }
                 ],
               ),

@@ -1,9 +1,7 @@
-import 'package:exercise_tracker/main.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'dart:async';
 import 'package:logging/logging.dart';
+import 'package:flutter/services.dart';
 
 final log = Logger('TimerLogger');
 
@@ -15,7 +13,6 @@ final periodicTimerProvider =
 });
 
 class PeriodicTimerStateNotifier extends StateNotifier<int> {
-  // PeriodicTimerStateNotifier({required int i}) : super(i);
   PeriodicTimerStateNotifier() : super(timePeriodValue);
 
   int originalTimePeriod = 0;
@@ -32,7 +29,6 @@ class PeriodicTimerStateNotifier extends StateNotifier<int> {
     state = originalTimePeriod;
   }
 
-  // void starttimer(int counter) {
   void starttimer(Function func) {
     if (originalTimePeriod == 0) originalTimePeriod = state;
     int counter = state;
@@ -47,10 +43,10 @@ class PeriodicTimerStateNotifier extends StateNotifier<int> {
         counter--;
         state = counter;
         if (counter == 0) {
+          SystemSound.play(SystemSoundType.click);
           log.info('periodicTimer Cancel timer');
           timer.cancel();
           func();
-          // set(timePeriodValue);
           reset();
         }
       },
