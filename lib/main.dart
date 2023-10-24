@@ -463,25 +463,43 @@ class SoundTimer extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
+      backgroundColor: const Color(myTimeAreaColor),
       appBar: AppBar(
-        title: const Text('Sound Timer for core training'),
+        backgroundColor: const Color(myAppBarColor),
+        title: const Text(
+          'Sound Timer for core training',
+          style: TextStyle(color: Color(myAppBarFontColor)),
+        ),
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(
             'Counter:${ref.watch(soundTimerCounter)}',
-            style: TextStyle(fontSize: 30),
+            style: const TextStyle(
+                fontSize: 30, color: Color(myTimeInfoFontColor)),
           ),
-          Text(
-            'Duration:${ref.watch(delayedDuration)}',
-            style: TextStyle(fontSize: 25),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                'Duration:${ref.watch(delayedDuration)}',
+                style: const TextStyle(
+                    fontSize: 25, color: Color(myTimeInfoFontColor)),
+              ),
+              const Text(
+                'ミリ秒',
+                style:
+                    TextStyle(fontSize: 18, color: Color(myTimeInfoFontColor)),
+              ),
+            ],
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               IconButton(
+                color: const Color(myTimeInfoFontColor),
                 iconSize: 25,
                 icon: const Icon(Icons.add),
                 tooltip: 'Increase by $adjustmentUnitSeconds seconds',
@@ -492,6 +510,7 @@ class SoundTimer extends ConsumerWidget {
                 },
               ),
               IconButton(
+                color: const Color(myTimeInfoFontColor),
                 iconSize: 25,
                 icon: const Icon(Icons.remove),
                 tooltip: 'Decrease by $adjustmentUnitSeconds seconds',
@@ -501,11 +520,13 @@ class SoundTimer extends ConsumerWidget {
                       .update((state) => state - adjustmentUnitSeconds * 1000);
                 },
               ),
-              Text('$adjustmentUnitSeconds秒'),
-              SizedBox(
+              Text('$adjustmentUnitSeconds秒',
+                  style: const TextStyle(color: Color(myTimeInfoFontColor))),
+              const SizedBox(
                 width: 15,
               ),
               IconButton(
+                color: Color(myTimeInfoFontColor),
                 iconSize: 25,
                 icon: const Icon(Icons.add),
                 tooltip: 'Increase by $adjustmentUnitMilliseconds milliseconds',
@@ -516,6 +537,7 @@ class SoundTimer extends ConsumerWidget {
                 },
               ),
               IconButton(
+                color: const Color(myTimeInfoFontColor),
                 iconSize: 25,
                 icon: const Icon(Icons.remove),
                 tooltip: 'Decrease by $adjustmentUnitMilliseconds milliseconds',
@@ -525,19 +547,29 @@ class SoundTimer extends ConsumerWidget {
                       .update((state) => state - adjustmentUnitMilliseconds);
                 },
               ),
-              Text('$adjustmentUnitMillisecondsミリ秒'),
+              Text('$adjustmentUnitMillisecondsミリ秒',
+                  style: TextStyle(
+                    color: Color(myTimeInfoFontColor),
+                  )),
             ],
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           ElevatedButton(
+            style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(myCardColor),
+                foregroundColor: Colors.black),
             onPressed: () {
               ref.read(soundTimerCounter.notifier).update((state) => 10);
               ref.read(delayedDuration.notifier).update((state) => 2750);
               startbeeptimer(ref: ref, counter: ref.watch(soundTimerCounter));
             },
-            child: Text('start timer'),
+            child: const Text('start timer'),
           ),
+          const SizedBox(height: 20),
           ElevatedButton(
+            style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(myCardColor),
+                foregroundColor: Colors.black),
             onPressed: () {
               // Navigate back to first route when tapped.
               Navigator.pop(context);
