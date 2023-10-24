@@ -376,7 +376,7 @@ class MyHomePage extends ConsumerWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => const SecondRoute()),
+                                  builder: (context) => const SoundTimer()),
                             );
                           }
                         },
@@ -410,8 +410,6 @@ class MyHomePage extends ConsumerWidget {
   }
 }
 
-int dura = 1;
-
 // void startbeeptimer() {
 //   log.info('startbeeptimer()');
 //   var counter = 5;
@@ -427,53 +425,73 @@ int dura = 1;
 //   });
 // }
 
-final timerValProvider = NotifierProvider<TimerVal, int>(TimerVal.new);
+// final timerValProvider = NotifierProvider<TimerVal, int>(TimerVal.new);
 
-class TimerVal extends Notifier<int> {
-  @override
-  int build() => 2;
-}
+// class TimerVal extends Notifier<int> {
+//   @override
+//   int build() => 1;
+// }
 
-class SecondRoute extends ConsumerWidget {
-  const SecondRoute({super.key});
+final delayedDuration = StateProvider<int>((ref) => 1);
+final soundTimerCounter = StateProvider<int>((ref) => 0);
 
-  void startbeeptimer(WidgetRef ref) {
-    log.info('startbeeptimer()');
-    var counter = 5;
+class SoundTimer extends ConsumerWidget {
+  const SoundTimer({super.key});
+
+  void startbeeptimer({required WidgetRef ref, int counter = 5}) async {
+    // log.info('startbeeptimer() counter:$counter');
+    if (counter == 0) return;
+
     SystemSound.play(SystemSoundType.click);
-    Timer.periodic(Duration(seconds: ref.read(timerValProvider)), (timer) {
-      SystemSound.play(SystemSoundType.click);
-      print(timer.tick);
-      counter--;
-      if (counter == 0) {
-        print('Cancel timer');
-        timer.cancel();
-      }
-    });
+    await Future.delayed(Duration(seconds: ref.watch(delayedDuration)));
+
+    SystemSound.play(SystemSoundType.click);
+    log.info(
+        'startbeeptimer() next loop. duration:${ref.watch(delayedDuration)} - counter:$counter');
+    ref.read(soundTimerCounter.notifier).update((state) => state - 1);
+    startbeeptimer(ref: ref, counter: ref.watch(soundTimerCounter));
   }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Second Route'),
+        title: const Text('Sound Timer for core training'),
       ),
       body: Column(
         children: [
-          IconButton(
-            icon: const Icon(Icons.volume_up),
-            tooltip: 'Increase volume by 10',
-            onPressed: () {
-              log.info('SecondRoute()1 ${dura}');
-              dura += 1;
-              log.info('SecondRoute()2 ${dura}');
-            },
+          Text('${ref.watch(soundTimerCounter)}'),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              IconButton(
+                icon: const Icon(Icons.add),
+                tooltip: 'Increase volume by 1',
+                onPressed: () {
+                  ref
+                      .read(delayedDuration.notifier)
+                      .update((state) => state + 1);
+                },
+              ),
+              Text('${ref.watch(delayedDuration)}'),
+              IconButton(
+                icon: const Icon(Icons.remove),
+                tooltip: 'Increase volume by 10',
+                onPressed: () {
+                  ref
+                      .read(delayedDuration.notifier)
+                      .update((state) => state - 1);
+                },
+              ),
+            ],
           ),
-          TextButton(
-              onPressed: () {
-                startbeeptimer(ref);
-              },
-              child: Text('start timer')),
+          ElevatedButton(
+            onPressed: () {
+              ref.read(soundTimerCounter.notifier).update((state) => 20);
+              startbeeptimer(ref: ref, counter: ref.watch(delayedDuration));
+            },
+            child: Text('start timer ${ref.watch(delayedDuration)}'),
+          ),
           ElevatedButton(
             onPressed: () {
               // Navigate back to first route when tapped.
