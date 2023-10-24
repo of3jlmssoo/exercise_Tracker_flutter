@@ -14,7 +14,8 @@ const _uuid = Uuid();
 const prepDuration = 2;
 const int workoutDuration = 3;
 const int totalDuration = prepDuration + workoutDuration;
-
+const adjustmentUnitMilliseconds = 250;
+const adjustmentUnitSeconds = 1;
 // int _selectedWorkout = -1;
 // bool _cancelTimer = false;
 // const int NUMBER_OF_WORKOUT = 10;
@@ -443,9 +444,16 @@ class SoundTimer extends ConsumerWidget {
     if (counter == 0) return;
 
     SystemSound.play(SystemSoundType.click);
-    await Future.delayed(Duration(seconds: ref.watch(delayedDuration)));
+    await Future.delayed(Duration(
+      milliseconds: ref.watch(delayedDuration),
+    ));
+    // seconds: ref.watch(delayedDuration),
 
     SystemSound.play(SystemSoundType.click);
+    // await Future.delayed(Duration(
+    //   milliseconds: 500,
+    // ));
+    // SystemSound.play(SystemSoundType.click);
     log.info(
         'startbeeptimer() next loop. duration:${ref.watch(delayedDuration)} - counter:$counter');
     ref.read(soundTimerCounter.notifier).update((state) => state - 1);
@@ -459,38 +467,75 @@ class SoundTimer extends ConsumerWidget {
         title: const Text('Sound Timer for core training'),
       ),
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Text('${ref.watch(soundTimerCounter)}'),
+          Text(
+            'Counter:${ref.watch(soundTimerCounter)}',
+            style: TextStyle(fontSize: 30),
+          ),
+          Text(
+            'Duration:${ref.watch(delayedDuration)}',
+            style: TextStyle(fontSize: 25),
+          ),
+          SizedBox(height: 20),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               IconButton(
+                iconSize: 25,
                 icon: const Icon(Icons.add),
-                tooltip: 'Increase volume by 1',
+                tooltip: 'Increase by $adjustmentUnitSeconds seconds',
                 onPressed: () {
                   ref
                       .read(delayedDuration.notifier)
-                      .update((state) => state + 1);
+                      .update((state) => state + adjustmentUnitSeconds * 1000);
                 },
               ),
-              Text('${ref.watch(delayedDuration)}'),
               IconButton(
+                iconSize: 25,
                 icon: const Icon(Icons.remove),
-                tooltip: 'Increase volume by 10',
+                tooltip: 'Decrease by $adjustmentUnitSeconds seconds',
                 onPressed: () {
                   ref
                       .read(delayedDuration.notifier)
-                      .update((state) => state - 1);
+                      .update((state) => state - adjustmentUnitSeconds * 1000);
                 },
               ),
+              Text('$adjustmentUnitSeconds秒'),
+              SizedBox(
+                width: 15,
+              ),
+              IconButton(
+                iconSize: 25,
+                icon: const Icon(Icons.add),
+                tooltip: 'Increase by $adjustmentUnitMilliseconds milliseconds',
+                onPressed: () {
+                  ref
+                      .read(delayedDuration.notifier)
+                      .update((state) => state + adjustmentUnitMilliseconds);
+                },
+              ),
+              IconButton(
+                iconSize: 25,
+                icon: const Icon(Icons.remove),
+                tooltip: 'Decrease by $adjustmentUnitMilliseconds milliseconds',
+                onPressed: () {
+                  ref
+                      .read(delayedDuration.notifier)
+                      .update((state) => state - adjustmentUnitMilliseconds);
+                },
+              ),
+              Text('$adjustmentUnitMillisecondsミリ秒'),
             ],
           ),
+          SizedBox(height: 20),
           ElevatedButton(
             onPressed: () {
-              ref.read(soundTimerCounter.notifier).update((state) => 20);
-              startbeeptimer(ref: ref, counter: ref.watch(delayedDuration));
+              ref.read(soundTimerCounter.notifier).update((state) => 10);
+              ref.read(delayedDuration.notifier).update((state) => 2750);
+              startbeeptimer(ref: ref, counter: ref.watch(soundTimerCounter));
             },
-            child: Text('start timer ${ref.watch(delayedDuration)}'),
+            child: Text('start timer'),
           ),
           ElevatedButton(
             onPressed: () {
