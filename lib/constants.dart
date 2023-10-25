@@ -3,6 +3,8 @@ const int workoutDuration = 3;
 const int totalDuration = prepDuration + workoutDuration;
 const adjustmentUnitMilliseconds = 250;
 const adjustmentUnitSeconds = 1;
+const soundTimerDefaultCounter = 10;
+const soundTimerDefaultDuration = 2750;
 
 const double normalFontSize = 15.0;
 const double largeFontSize = 24.0;
