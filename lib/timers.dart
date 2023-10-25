@@ -22,9 +22,6 @@ class PeriodicTimerStateNotifier extends StateNotifier<int> {
     state = newval;
   }
 
-  // int get m => state ~/ 60;
-  // int get s => state % 60;
-
   void reset() {
     state = originalTimePeriod;
   }
