@@ -7,7 +7,7 @@ import 'constants.dart';
 
 const _uuid = Uuid();
 
-final log = Logger('MainLogger');
+final log = Logger('ExercisefLogger');
 
 final exerciseListProvider =
     NotifierProvider<ExerciseList, List<Exercise>>(ExerciseList.new);
@@ -128,6 +128,18 @@ class ExerciseList extends Notifier<List<Exercise>> {
               fontsize: largeFontSize)
         else
           exercise,
+    ];
+  }
+
+  void toggleTitleAll() {
+    state = [
+      for (final exercise in state)
+        Exercise(
+            id: exercise.id,
+            completed: !exercise.completed,
+            name: exercise.name,
+            imageasset: exercise.imageasset, //'images/done.png',
+            fontsize: normalFontSize)
     ];
   }
 }

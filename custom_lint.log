@@ -55,3 +55,91 @@ The Dart VM service is listening on http://127.0.0.1:38905/aIccIrUXVW4=/
 The Dart DevTools debugger and profiler is available at: http://127.0.0.1:38905/aIccIrUXVW4=/devtools?uri=ws://127.0.0.1:38905/aIccIrUXVW4=/ws
 The Dart VM service is listening on http://127.0.0.1:36337/eBjT688fUgg=/
 The Dart DevTools debugger and profiler is available at: http://127.0.0.1:36337/eBjT688fUgg=/devtools?uri=ws://127.0.0.1:36337/eBjT688fUgg=/ws
+[IgnoreCode] 2023-10-26T11:01:53.624866 Plugin IgnoreCode threw while analyzing /home/hiroshisakuma/AndroidStudioProjects/exerciseTracker/lib/exercise.dart:
+[IgnoreCode] 2023-10-26T11:01:53.624866 InconsistentAnalysisException: Requested result might be inconsistent with previously returned results
+[IgnoreCode] 2023-10-26T11:01:53.624866
+[IgnoreCode] 2023-10-26T11:01:53.624866 #0      AnalysisSessionImpl._checkConsistency (package:analyzer/src/dart/analysis/session.dart:135:7)
+[IgnoreCode] 2023-10-26T11:01:53.624866 #1      AnalysisSessionImpl.getResolvedUnit (package:analyzer/src/dart/analysis/session.dart:121:5)
+[IgnoreCode] 2023-10-26T11:01:53.624866 #2      ChangeBuilderImpl._createDartFileEditBuilder (package:analyzer_plugin/src/utilities/change_builder/change_builder_core.dart:287:33)
+[IgnoreCode] 2023-10-26T11:01:53.624866 #3      ChangeBuilderImpl.addDartFileEdit (package:analyzer_plugin/src/utilities/change_builder/change_builder_core.dart:136:23)
+[IgnoreCode] 2023-10-26T11:01:53.624866 #4      _ChangeBuilderImpl.addDartFileEdit (package:custom_lint_core/src/change_reporter.dart:116:33)
+[IgnoreCode] 2023-10-26T11:01:53.624866 #5      IgnoreCode.run (package:custom_lint_builder/src/ignore.dart:119:32)
+[IgnoreCode] 2023-10-26T11:01:53.624866 #6      _ClientAnalyzerPlugin._runFixRun.<anonymous closure> (package:custom_lint_builder/src/client.dart:638:17)
+[IgnoreCode] 2023-10-26T11:01:53.624866 #7      new Future.<anonymous closure> (dart:async/future.dart:256:37)
+[IgnoreCode] 2023-10-26T11:01:53.624866 #8      _rootRun (dart:async/zone.dart:1391:47)
+[IgnoreCode] 2023-10-26T11:01:53.624866 #9      _CustomZone.run (dart:async/zone.dart:1301:19)
+[IgnoreCode] 2023-10-26T11:01:53.624866 #10     _CustomZone.runGuarded (dart:async/zone.dart:1209:7)
+[IgnoreCode] 2023-10-26T11:01:53.624866 #11     _CustomZone.bindCallbackGuarded.<anonymous closure> (dart:async/zone.dart:1249:23)
+[IgnoreCode] 2023-10-26T11:01:53.624866 #12     _rootRun (dart:async/zone.dart:1399:13)
+[IgnoreCode] 2023-10-26T11:01:53.624866 #13     _CustomZone.run (dart:async/zone.dart:1301:19)
+[IgnoreCode] 2023-10-26T11:01:53.624866 #14     _CustomZone.bindCallback.<anonymous closure> (dart:async/zone.dart:1233:23)
+[IgnoreCode] 2023-10-26T11:01:53.624866 #15     Timer._createTimer.<anonymous closure> (dart:async-patch/timer_patch.dart:18:15)
+[IgnoreCode] 2023-10-26T11:01:53.624866 #16     _Timer._runTimers (dart:isolate-patch/timer_impl.dart:398:19)
+[IgnoreCode] 2023-10-26T11:01:53.624866 #17     _RawReceivePort._handleMessage (dart:isolate-patch/isolate_patch.dart:189:12)
+[IgnoreCode] 2023-10-26T11:01:53.624866
+[IgnoreCode] 2023-10-26T11:01:53.663489 Plugin IgnoreCode threw while analyzing /home/hiroshisakuma/AndroidStudioProjects/exerciseTracker/lib/exercise.dart:
+[IgnoreCode] 2023-10-26T11:01:53.663489 InconsistentAnalysisException: Requested result might be inconsistent with previously returned results
+[IgnoreCode] 2023-10-26T11:01:53.663489
+[IgnoreCode] 2023-10-26T11:01:53.663489 #0      AnalysisSessionImpl._checkConsistency (package:analyzer/src/dart/analysis/session.dart:135:7)
+[IgnoreCode] 2023-10-26T11:01:53.663489 #1      AnalysisSessionImpl.getResolvedUnit (package:analyzer/src/dart/analysis/session.dart:121:5)
+[IgnoreCode] 2023-10-26T11:01:53.663489 #2      ChangeBuilderImpl._createDartFileEditBuilder (package:analyzer_plugin/src/utilities/change_builder/change_builder_core.dart:287:33)
+[IgnoreCode] 2023-10-26T11:01:53.663489 #3      ChangeBuilderImpl.addDartFileEdit (package:analyzer_plugin/src/utilities/change_builder/change_builder_core.dart:136:23)
+[IgnoreCode] 2023-10-26T11:01:53.663489 #4      _ChangeBuilderImpl.addDartFileEdit (package:custom_lint_core/src/change_reporter.dart:116:33)
+[IgnoreCode] 2023-10-26T11:01:53.663489 #5      IgnoreCode.run (package:custom_lint_builder/src/ignore.dart:143:32)
+[IgnoreCode] 2023-10-26T11:01:53.663489 #6      _ClientAnalyzerPlugin._runFixRun.<anonymous closure> (package:custom_lint_builder/src/client.dart:638:17)
+[IgnoreCode] 2023-10-26T11:01:53.663489 #7      new Future.<anonymous closure> (dart:async/future.dart:256:37)
+[IgnoreCode] 2023-10-26T11:01:53.663489 #8      _rootRun (dart:async/zone.dart:1391:47)
+[IgnoreCode] 2023-10-26T11:01:53.663489 #9      _CustomZone.run (dart:async/zone.dart:1301:19)
+[IgnoreCode] 2023-10-26T11:01:53.663489 #10     _CustomZone.runGuarded (dart:async/zone.dart:1209:7)
+[IgnoreCode] 2023-10-26T11:01:53.663489 #11     _CustomZone.bindCallbackGuarded.<anonymous closure> (dart:async/zone.dart:1249:23)
+[IgnoreCode] 2023-10-26T11:01:53.663489 #12     _rootRun (dart:async/zone.dart:1399:13)
+[IgnoreCode] 2023-10-26T11:01:53.663489 #13     _CustomZone.run (dart:async/zone.dart:1301:19)
+[IgnoreCode] 2023-10-26T11:01:53.663489 #14     _CustomZone.bindCallback.<anonymous closure> (dart:async/zone.dart:1233:23)
+[IgnoreCode] 2023-10-26T11:01:53.663489 #15     Timer._createTimer.<anonymous closure> (dart:async-patch/timer_patch.dart:18:15)
+[IgnoreCode] 2023-10-26T11:01:53.663489 #16     _Timer._runTimers (dart:isolate-patch/timer_impl.dart:398:19)
+[IgnoreCode] 2023-10-26T11:01:53.663489 #17     _RawReceivePort._handleMessage (dart:isolate-patch/isolate_patch.dart:189:12)
+[IgnoreCode] 2023-10-26T11:01:53.663489
+[IgnoreCode] 2023-10-26T11:01:53.663807 Plugin IgnoreCode threw while analyzing /home/hiroshisakuma/AndroidStudioProjects/exerciseTracker/lib/exercise.dart:
+[IgnoreCode] 2023-10-26T11:01:53.663807 InconsistentAnalysisException: Requested result might be inconsistent with previously returned results
+[IgnoreCode] 2023-10-26T11:01:53.663807
+[IgnoreCode] 2023-10-26T11:01:53.663807 #0      AnalysisSessionImpl._checkConsistency (package:analyzer/src/dart/analysis/session.dart:135:7)
+[IgnoreCode] 2023-10-26T11:01:53.663807 #1      AnalysisSessionImpl.getResolvedUnit (package:analyzer/src/dart/analysis/session.dart:121:5)
+[IgnoreCode] 2023-10-26T11:01:53.663807 #2      ChangeBuilderImpl._createDartFileEditBuilder (package:analyzer_plugin/src/utilities/change_builder/change_builder_core.dart:287:33)
+[IgnoreCode] 2023-10-26T11:01:53.663807 #3      ChangeBuilderImpl.addDartFileEdit (package:analyzer_plugin/src/utilities/change_builder/change_builder_core.dart:136:23)
+[IgnoreCode] 2023-10-26T11:01:53.663807 #4      _ChangeBuilderImpl.addDartFileEdit (package:custom_lint_core/src/change_reporter.dart:116:33)
+[IgnoreCode] 2023-10-26T11:01:53.663807 #5      IgnoreCode.run (package:custom_lint_builder/src/ignore.dart:119:32)
+[IgnoreCode] 2023-10-26T11:01:53.663807 #6      _ClientAnalyzerPlugin._runFixRun.<anonymous closure> (package:custom_lint_builder/src/client.dart:638:17)
+[IgnoreCode] 2023-10-26T11:01:53.663807 #7      new Future.<anonymous closure> (dart:async/future.dart:256:37)
+[IgnoreCode] 2023-10-26T11:01:53.663807 #8      _rootRun (dart:async/zone.dart:1391:47)
+[IgnoreCode] 2023-10-26T11:01:53.663807 #9      _CustomZone.run (dart:async/zone.dart:1301:19)
+[IgnoreCode] 2023-10-26T11:01:53.663807 #10     _CustomZone.runGuarded (dart:async/zone.dart:1209:7)
+[IgnoreCode] 2023-10-26T11:01:53.663807 #11     _CustomZone.bindCallbackGuarded.<anonymous closure> (dart:async/zone.dart:1249:23)
+[IgnoreCode] 2023-10-26T11:01:53.663807 #12     _rootRun (dart:async/zone.dart:1399:13)
+[IgnoreCode] 2023-10-26T11:01:53.663807 #13     _CustomZone.run (dart:async/zone.dart:1301:19)
+[IgnoreCode] 2023-10-26T11:01:53.663807 #14     _CustomZone.bindCallback.<anonymous closure> (dart:async/zone.dart:1233:23)
+[IgnoreCode] 2023-10-26T11:01:53.663807 #15     Timer._createTimer.<anonymous closure> (dart:async-patch/timer_patch.dart:18:15)
+[IgnoreCode] 2023-10-26T11:01:53.663807 #16     _Timer._runTimers (dart:isolate-patch/timer_impl.dart:398:19)
+[IgnoreCode] 2023-10-26T11:01:53.663807 #17     _RawReceivePort._handleMessage (dart:isolate-patch/isolate_patch.dart:189:12)
+[IgnoreCode] 2023-10-26T11:01:53.663807
+[IgnoreCode] 2023-10-26T11:01:53.664002 Plugin IgnoreCode threw while analyzing /home/hiroshisakuma/AndroidStudioProjects/exerciseTracker/lib/exercise.dart:
+[IgnoreCode] 2023-10-26T11:01:53.664002 InconsistentAnalysisException: Requested result might be inconsistent with previously returned results
+[IgnoreCode] 2023-10-26T11:01:53.664002
+[IgnoreCode] 2023-10-26T11:01:53.664002 #0      AnalysisSessionImpl._checkConsistency (package:analyzer/src/dart/analysis/session.dart:135:7)
+[IgnoreCode] 2023-10-26T11:01:53.664002 #1      AnalysisSessionImpl.getResolvedUnit (package:analyzer/src/dart/analysis/session.dart:121:5)
+[IgnoreCode] 2023-10-26T11:01:53.664002 #2      ChangeBuilderImpl._createDartFileEditBuilder (package:analyzer_plugin/src/utilities/change_builder/change_builder_core.dart:287:33)
+[IgnoreCode] 2023-10-26T11:01:53.664002 #3      ChangeBuilderImpl.addDartFileEdit (package:analyzer_plugin/src/utilities/change_builder/change_builder_core.dart:136:23)
+[IgnoreCode] 2023-10-26T11:01:53.664002 #4      _ChangeBuilderImpl.addDartFileEdit (package:custom_lint_core/src/change_reporter.dart:116:33)
+[IgnoreCode] 2023-10-26T11:01:53.664002 #5      IgnoreCode.run (package:custom_lint_builder/src/ignore.dart:143:32)
+[IgnoreCode] 2023-10-26T11:01:53.664002 #6      _ClientAnalyzerPlugin._runFixRun.<anonymous closure> (package:custom_lint_builder/src/client.dart:638:17)
+[IgnoreCode] 2023-10-26T11:01:53.664002 #7      new Future.<anonymous closure> (dart:async/future.dart:256:37)
+[IgnoreCode] 2023-10-26T11:01:53.664002 #8      _rootRun (dart:async/zone.dart:1391:47)
+[IgnoreCode] 2023-10-26T11:01:53.664002 #9      _CustomZone.run (dart:async/zone.dart:1301:19)
+[IgnoreCode] 2023-10-26T11:01:53.664002 #10     _CustomZone.runGuarded (dart:async/zone.dart:1209:7)
+[IgnoreCode] 2023-10-26T11:01:53.664002 #11     _CustomZone.bindCallbackGuarded.<anonymous closure> (dart:async/zone.dart:1249:23)
+[IgnoreCode] 2023-10-26T11:01:53.664002 #12     _rootRun (dart:async/zone.dart:1399:13)
+[IgnoreCode] 2023-10-26T11:01:53.664002 #13     _CustomZone.run (dart:async/zone.dart:1301:19)
+[IgnoreCode] 2023-10-26T11:01:53.664002 #14     _CustomZone.bindCallback.<anonymous closure> (dart:async/zone.dart:1233:23)
+[IgnoreCode] 2023-10-26T11:01:53.664002 #15     Timer._createTimer.<anonymous closure> (dart:async-patch/timer_patch.dart:18:15)
+[IgnoreCode] 2023-10-26T11:01:53.664002 #16     _Timer._runTimers (dart:isolate-patch/timer_impl.dart:398:19)
+[IgnoreCode] 2023-10-26T11:01:53.664002 #17     _RawReceivePort._handleMessage (dart:isolate-patch/isolate_patch.dart:189:12)
+[IgnoreCode] 2023-10-26T11:01:53.664002

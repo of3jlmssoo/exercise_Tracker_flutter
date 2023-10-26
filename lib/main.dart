@@ -107,6 +107,9 @@ class MyHomePage extends ConsumerWidget {
                                   ref
                                       .read(periodicTimerProvider.notifier)
                                       .canceltimer();
+                                  ref
+                                      .read(exerciseListProvider.notifier)
+                                      .toggleTitleAll();
                                 },
                                 icon: const Icon(Icons.cancel),
                                 color: const Color(myTimeInfoFontColor),
