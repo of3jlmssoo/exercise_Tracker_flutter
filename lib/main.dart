@@ -46,23 +46,25 @@ class MyHomePage extends ConsumerWidget {
         color: const Color(myMainContainerColor),
         child: CustomScrollView(
           slivers: <Widget>[
-            const SliverAppBar(
-              floating: false,
+            SliverAppBar(
+              floating: true,
+              pinned: true,
+              snap: false,
               backgroundColor: Color(myAppBarColor),
               centerTitle: true,
-              pinned: true,
-              expandedHeight: 50.0,
-              flexibleSpace: FlexibleSpaceBar(
-                  title: Text('exercise tracker',
+              expandedHeight: 100.0,
+              collapsedHeight: 100.0,
+              flexibleSpace: Column(
+                children: [
+                  SizedBox(height: 15),
+                  Text('exercise tracker',
                       style: TextStyle(
                           color: Color(myAppBarFontColor),
                           fontSize: 35.0,
-                          fontWeight: FontWeight.bold))),
-            ),
-            SliverList(
-              delegate: SliverChildBuilderDelegate(
-                (BuildContext context, int index) {
-                  return Container(
+                          fontWeight: FontWeight.bold)),
+                  Expanded(
+                    child: Container(
+                      width: double.infinity,
                       alignment: Alignment.bottomLeft,
                       color: const Color(myTimeAreaColor),
                       child: Row(
@@ -90,7 +92,7 @@ class MyHomePage extends ConsumerWidget {
                                           fontSize: 30.0,
                                           color: Color(myTimeInfoFontColor),
                                           decoration: TextDecoration.none),
-                                    )
+                                    ),
                                   ],
                                 ),
                               ),
@@ -146,11 +148,111 @@ class MyHomePage extends ConsumerWidget {
                           ]),
                           const SizedBox(width: 2.0),
                         ],
-                      ));
-                },
-                childCount: 1,
+                      ),
+                    ),
+                  ),
+                ],
               ),
+              // flexibleSpace: FlexibleSpaceBar(
+              //     title: Text('exercise tracker',
+              //         style: TextStyle(
+              //             color: Color(myAppBarFontColor),
+              //             fontSize: 35.0,
+              //             fontWeight: FontWeight.bold))),
             ),
+            // SliverList(
+            //   delegate: SliverChildBuilderDelegate(
+            //     (BuildContext context, int index) {
+            //       return Container(
+            //         alignment: Alignment.bottomLeft,
+            //         color: const Color(myTimeAreaColor),
+            //         child: Row(
+            //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //           crossAxisAlignment: CrossAxisAlignment.start,
+            //           children: [
+            //             const SizedBox(
+            //                 height: kMinInteractiveDimension, width: 2),
+            //             const Text("tap icon\nto start:",
+            //                 style: TextStyle(
+            //                     fontSize: 12.0,
+            //                     color: Color(myTimeInfoFontColor),
+            //                     decoration: TextDecoration.none)),
+            //             Row(
+            //               crossAxisAlignment: CrossAxisAlignment.center,
+            //               children: [
+            //                 SizedBox(
+            //                   height: kMinInteractiveDimension,
+            //                   child: Column(
+            //                     mainAxisAlignment: MainAxisAlignment.center,
+            //                     children: [
+            //                       Text(
+            //                         '${ref.watch(periodicTimerProvider) ~/ 60}:${(ref.watch(periodicTimerProvider) % 60).toString().padLeft(2, '0')}',
+            //                         style: const TextStyle(
+            //                             fontSize: 30.0,
+            //                             color: Color(myTimeInfoFontColor),
+            //                             decoration: TextDecoration.none),
+            //                       )
+            //                     ],
+            //                   ),
+            //                 ),
+            //                 const SizedBox(width: 5),
+            //                 const Text("sec",
+            //                     style: TextStyle(
+            //                         fontSize: 15.0,
+            //                         color: Color(myTimeInfoFontColor),
+            //                         decoration: TextDecoration.none)),
+            //                 IconButton(
+            //                   onPressed: () {
+            //                     ref
+            //                         .read(periodicTimerProvider.notifier)
+            //                         .canceltimer();
+            //                   },
+            //                   icon: const Icon(Icons.cancel),
+            //                   color: const Color(myTimeInfoFontColor),
+            //                 ),
+            //               ],
+            //             ),
+            //             const Text("remain:",
+            //                 style: TextStyle(
+            //                     fontSize: 12.0,
+            //                     color: Color(myTimeInfoFontColor),
+            //                     decoration: TextDecoration.none)),
+            //             const Row(
+            //               crossAxisAlignment: CrossAxisAlignment.center,
+            //               children: [
+            //                 SizedBox(
+            //                   height: kMinInteractiveDimension,
+            //                   child: Column(
+            //                     mainAxisAlignment: MainAxisAlignment.center,
+            //                     children: [
+            //                       Text('0',
+            //                           style: TextStyle(
+            //                               fontSize: 30.0,
+            //                               color: Color(myTimeInfoFontColor),
+            //                               decoration: TextDecoration.none)),
+            //                     ],
+            //                   ),
+            //                 ),
+            //               ],
+            //             ),
+            //             const Row(children: [
+            //               IconButton(
+            //                   onPressed: null,
+            //                   icon: Icon(Icons.alarm,
+            //                       color: Color(myTimeInfoFontColor))),
+            //               IconButton(
+            //                   onPressed: null,
+            //                   icon: Icon(Icons.edit,
+            //                       color: Color(myTimeInfoFontColor))),
+            //             ]),
+            //             const SizedBox(width: 2.0),
+            //           ],
+            //         ),
+            //       );
+            //     },
+            //     childCount: 1,
+            //   ),
+            // ),
             SliverGrid(
               gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
                   maxCrossAxisExtent: 400.0,
