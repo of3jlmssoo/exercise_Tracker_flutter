@@ -18,9 +18,9 @@ Exercise Tracker エクササイズトラッカー
    一定間隔で決められた回数繰り返すエクササイズ用
    - 一定間隔でビープ音
 
-<img src="./docs/mainScreen1.png" width="150">
-<img src="./docs/mainScreen2.png" width="150">
-<img src="./docs/soundTimerScreen.png" width="150">
+<img src="./docs/mainScreen1.png" width="200">
+<img src="./docs/mainScreen2.png" width="200">
+<img src="./docs/soundTimerScreen.png" width="200">
 
 ## todos
 
