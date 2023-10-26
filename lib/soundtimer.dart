@@ -13,7 +13,7 @@ final soundTimerDuration =
 final soundTimerCounter = StateProvider<int>((ref) => soundTimerDefaultCounter);
 
 class SoundTimer extends ConsumerWidget {
-  const SoundTimer({super.key, required String this.id});
+  const SoundTimer({super.key, required this.id});
   // SoundTimer({required this.cbf});
   // Function cbf;
   final String id;
@@ -62,13 +62,17 @@ class SoundTimer extends ConsumerWidget {
                   builder: (BuildContext context) {
                     return Consumer(builder: (context, ref, _) {
                       return Dialog(
+                        backgroundColor: Colors.black,
                         child: Padding(
-                          padding: const EdgeInsets.all(1.0),
+                          padding: const EdgeInsets.all(5.0),
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
-                              const Text('回数をセット'),
+                              const Text('回数をセット',
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      color: Color(myTimeInfoFontColor))),
                               const SizedBox(height: 10),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -89,7 +93,12 @@ class SoundTimer extends ConsumerWidget {
                                         log.info(
                                             'decresing the counter 2. ${ref.watch(soundTimerCounter)}');
                                       }),
-                                  Text('${ref.watch(soundTimerCounter)}'),
+                                  Text(
+                                    '${ref.watch(soundTimerCounter)}',
+                                    style: const TextStyle(
+                                        fontSize: 20,
+                                        color: Color(myTimeInfoFontColor)),
+                                  ),
                                   IconButton(
                                       color: const Color(myTimeInfoFontColor),
                                       iconSize: 25,
@@ -107,7 +116,12 @@ class SoundTimer extends ConsumerWidget {
                                 onPressed: () {
                                   Navigator.pop(context);
                                 },
-                                child: const Text('Close'),
+                                child: const Text(
+                                  '閉じる',
+                                  style: TextStyle(
+                                      fontSize: 17,
+                                      color: Color(myTimeInfoFontColor)),
+                                ),
                               ),
                             ],
                           ),

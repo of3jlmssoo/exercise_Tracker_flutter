@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -163,6 +161,8 @@ class MyHomePage extends ConsumerWidget {
                 [
                   for (int index = 0; index < exercises.length; index++) ...{
                     Card(
+                      elevation: 200,
+                      // surfaceTintColor: Colors.blue,
                       color: const Color(myCardColor),
                       clipBehavior: Clip.hardEdge,
                       child: InkWell(
