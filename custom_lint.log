@@ -143,3 +143,7 @@ The Dart DevTools debugger and profiler is available at: http://127.0.0.1:36337/
 [IgnoreCode] 2023-10-26T11:01:53.664002 #16     _Timer._runTimers (dart:isolate-patch/timer_impl.dart:398:19)
 [IgnoreCode] 2023-10-26T11:01:53.664002 #17     _RawReceivePort._handleMessage (dart:isolate-patch/isolate_patch.dart:189:12)
 [IgnoreCode] 2023-10-26T11:01:53.664002
+The Dart VM service is listening on http://127.0.0.1:36065/w3loa-BzAuY=/
+The Dart DevTools debugger and profiler is available at: http://127.0.0.1:36065/w3loa-BzAuY=/devtools?uri=ws://127.0.0.1:36065/w3loa-BzAuY=/ws
+The Dart VM service is listening on http://127.0.0.1:41691/gNTlJUjlG1E=/
+The Dart DevTools debugger and profiler is available at: http://127.0.0.1:41691/gNTlJUjlG1E=/devtools?uri=ws://127.0.0.1:41691/gNTlJUjlG1E=/ws

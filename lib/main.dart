@@ -46,182 +46,208 @@ class MyHomePage extends ConsumerWidget {
         color: const Color(myMainContainerColor),
         child: CustomScrollView(
           slivers: <Widget>[
-            SliverAppBar(
-              floating: true,
-              pinned: true,
-              snap: false,
-              backgroundColor: Color(myAppBarColor),
-              centerTitle: true,
-              expandedHeight: 100.0,
-              collapsedHeight: 100.0,
-              flexibleSpace: Column(
-                children: [
-                  SizedBox(height: 15),
-                  Text('exercise tracker',
-                      style: TextStyle(
-                          color: Color(myAppBarFontColor),
-                          fontSize: 35.0,
-                          fontWeight: FontWeight.bold)),
-                  Expanded(
-                    child: Container(
-                      width: double.infinity,
-                      alignment: Alignment.bottomLeft,
-                      color: const Color(myTimeAreaColor),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const SizedBox(
-                              height: kMinInteractiveDimension, width: 2),
-                          const Text("tap icon\nto start:",
-                              style: TextStyle(
-                                  fontSize: 12.0,
-                                  color: Color(myTimeInfoFontColor),
-                                  decoration: TextDecoration.none)),
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              SizedBox(
-                                height: kMinInteractiveDimension,
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      '${ref.watch(periodicTimerProvider) ~/ 60}:${(ref.watch(periodicTimerProvider) % 60).toString().padLeft(2, '0')}',
-                                      style: const TextStyle(
-                                          fontSize: 30.0,
-                                          color: Color(myTimeInfoFontColor),
-                                          decoration: TextDecoration.none),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              const SizedBox(width: 5),
-                              const Text("sec",
-                                  style: TextStyle(
-                                      fontSize: 15.0,
-                                      color: Color(myTimeInfoFontColor),
-                                      decoration: TextDecoration.none)),
-                              IconButton(
-                                onPressed: () {
-                                  ref
-                                      .read(periodicTimerProvider.notifier)
-                                      .canceltimer();
-                                  ref
-                                      .read(exerciseListProvider.notifier)
-                                      .toggleTitleAll();
-                                },
-                                icon: const Icon(Icons.cancel),
-                                color: const Color(myTimeInfoFontColor),
-                              ),
-                            ],
-                          ),
-                          const Text("remain:",
-                              style: TextStyle(
-                                  fontSize: 12.0,
-                                  color: Color(myTimeInfoFontColor),
-                                  decoration: TextDecoration.none)),
-                          const Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              SizedBox(
-                                height: kMinInteractiveDimension,
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text('0',
-                                        style: TextStyle(
-                                            fontSize: 30.0,
-                                            color: Color(myTimeInfoFontColor),
-                                            decoration: TextDecoration.none)),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                          const Row(children: [
-                            IconButton(
-                                onPressed: null,
-                                icon: Icon(Icons.alarm,
-                                    color: Color(myTimeInfoFontColor))),
-                            IconButton(
-                                onPressed: null,
-                                icon: Icon(Icons.edit,
-                                    color: Color(myTimeInfoFontColor))),
-                          ]),
-                          const SizedBox(width: 2.0),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
+            sliversWidget(ref: ref),
+            SliverGridWidget(exercises: exercises, ref: ref),
+          ],
+        ));
+  }
+}
+
+class SliverGridWidget extends StatelessWidget {
+  const SliverGridWidget({
+    super.key,
+    required this.exercises,
+    required this.ref,
+  });
+
+  final List<Exercise> exercises;
+  final WidgetRef ref;
+
+  @override
+  Widget build(BuildContext context) {
+    return SliverGrid(
+      gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+          maxCrossAxisExtent: 400.0,
+          mainAxisSpacing: 10.0,
+          crossAxisSpacing: 10.0,
+          childAspectRatio: 1.4),
+      delegate: SliverChildListDelegate(
+        [
+          for (int index = 0; index < exercises.length; index++) ...{
+            Card(
+              elevation: 200,
+              // surfaceTintColor: Colors.blue,
+              color: const Color(myCardColor),
+              clipBehavior: Clip.hardEdge,
+              child: InkWell(
+                highlightColor: Colors.red,
+                splashColor: const Color(0xff445D48),
+                onTap: () {
+                  if (exercises[index].name != 'core') {
+                    log.info('Card InkWell onTap()');
+                    SystemSound.play(SystemSoundType.click);
+                    ref.read(periodicTimerProvider.notifier).starttimer(() => {
+                          ref
+                              .read(exerciseListProvider.notifier)
+                              .toggleTitle(exercises[index].id),
+                          ref
+                              .read(exerciseListProvider.notifier)
+                              .setDone(exercises[index].id),
+                        });
+
+                    ref
+                        .read(exerciseListProvider.notifier)
+                        .toggleTitle(exercises[index].id);
+                  } else {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                SoundTimer(id: exercises[index].id)));
+                  }
+                },
+                child: Column(
+                  children: [
+                    // imageList[index].$1,
+                    Text(exercises[index].name,
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: exercises[index].fontsize)),
+                    SizedBox(
+                        width: 100,
+                        height: 100,
+                        child: Image.asset(exercises[index].imageasset,
+                            fit: BoxFit.contain)),
+                    // imageList[index],
+                  ],
+                ),
               ),
             ),
-            SliverGrid(
-              gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                  maxCrossAxisExtent: 400.0,
-                  mainAxisSpacing: 10.0,
-                  crossAxisSpacing: 10.0,
-                  childAspectRatio: 1.4),
-              delegate: SliverChildListDelegate(
-                [
-                  for (int index = 0; index < exercises.length; index++) ...{
-                    Card(
-                      elevation: 200,
-                      // surfaceTintColor: Colors.blue,
-                      color: const Color(myCardColor),
-                      clipBehavior: Clip.hardEdge,
-                      child: InkWell(
-                        highlightColor: Colors.red,
-                        splashColor: const Color(0xff445D48),
-                        onTap: () {
-                          if (exercises[index].name != 'core') {
-                            log.info('Card InkWell onTap()');
-                            SystemSound.play(SystemSoundType.click);
-                            ref
-                                .read(periodicTimerProvider.notifier)
-                                .starttimer(() => {
-                                      ref
-                                          .read(exerciseListProvider.notifier)
-                                          .toggleTitle(exercises[index].id),
-                                      ref
-                                          .read(exerciseListProvider.notifier)
-                                          .setDone(exercises[index].id),
-                                    });
+          }
+        ],
+      ),
+    );
+  }
+}
 
-                            ref
-                                .read(exerciseListProvider.notifier)
-                                .toggleTitle(exercises[index].id);
-                          } else {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        SoundTimer(id: exercises[index].id)));
-                          }
-                        },
+class sliversWidget extends StatelessWidget {
+  const sliversWidget({
+    super.key,
+    required this.ref,
+  });
+  final WidgetRef ref;
+
+  @override
+  Widget build(BuildContext context) {
+    return SliverAppBar(
+      floating: true,
+      pinned: true,
+      snap: false,
+      backgroundColor: Color(myAppBarColor),
+      centerTitle: true,
+      expandedHeight: 100.0,
+      collapsedHeight: 100.0,
+      flexibleSpace: Column(
+        children: [
+          SizedBox(height: 15),
+          Text('exercise tracker',
+              style: TextStyle(
+                  color: Color(myAppBarFontColor),
+                  fontSize: 35.0,
+                  fontWeight: FontWeight.bold)),
+          Expanded(
+            child: Container(
+              width: double.infinity,
+              alignment: Alignment.bottomLeft,
+              color: const Color(myTimeAreaColor),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: kMinInteractiveDimension, width: 2),
+                  const Text("tap icon\nto start:",
+                      style: TextStyle(
+                          fontSize: 12.0,
+                          color: Color(myTimeInfoFontColor),
+                          decoration: TextDecoration.none)),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        height: kMinInteractiveDimension,
                         child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            // imageList[index].$1,
-                            Text(exercises[index].name,
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: exercises[index].fontsize)),
-                            SizedBox(
-                                width: 100,
-                                height: 100,
-                                child: Image.asset(exercises[index].imageasset,
-                                    fit: BoxFit.contain)),
-                            // imageList[index],
+                            Text(
+                              '${ref.watch(periodicTimerProvider) ~/ 60}:${(ref.watch(periodicTimerProvider) % 60).toString().padLeft(2, '0')}',
+                              style: const TextStyle(
+                                  fontSize: 30.0,
+                                  color: Color(myTimeInfoFontColor),
+                                  decoration: TextDecoration.none),
+                            ),
                           ],
                         ),
                       ),
-                    ),
-                  }
+                      const SizedBox(width: 5),
+                      const Text("sec",
+                          style: TextStyle(
+                              fontSize: 15.0,
+                              color: Color(myTimeInfoFontColor),
+                              decoration: TextDecoration.none)),
+                      IconButton(
+                        onPressed: () {
+                          ref
+                              .read(periodicTimerProvider.notifier)
+                              .canceltimer();
+                          ref
+                              .read(exerciseListProvider.notifier)
+                              .toggleTitleAll();
+                        },
+                        icon: const Icon(Icons.cancel),
+                        color: const Color(myTimeInfoFontColor),
+                      ),
+                    ],
+                  ),
+                  const Text("remain:",
+                      style: TextStyle(
+                          fontSize: 12.0,
+                          color: Color(myTimeInfoFontColor),
+                          decoration: TextDecoration.none)),
+                  const Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        height: kMinInteractiveDimension,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text('0',
+                                style: TextStyle(
+                                    fontSize: 30.0,
+                                    color: Color(myTimeInfoFontColor),
+                                    decoration: TextDecoration.none)),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  const Row(children: [
+                    IconButton(
+                        onPressed: null,
+                        icon: Icon(Icons.alarm,
+                            color: Color(myTimeInfoFontColor))),
+                    IconButton(
+                        onPressed: null,
+                        icon: Icon(Icons.edit,
+                            color: Color(myTimeInfoFontColor))),
+                  ]),
+                  const SizedBox(width: 2.0),
                 ],
               ),
             ),
-          ],
-        ));
+          ),
+        ],
+      ),
+    );
   }
 }

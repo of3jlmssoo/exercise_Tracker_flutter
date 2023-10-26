@@ -22,6 +22,9 @@ class SoundTimer extends ConsumerWidget {
       {required WidgetRef ref, int counter = 5, required String id}) async {
     if (counter == 0) {
       ref.read(exerciseListProvider.notifier).setDone(id);
+      ref
+          .read(soundTimerCounter.notifier)
+          .update((state) => soundTimerDefaultCounter);
       return;
     }
 
